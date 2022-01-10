@@ -156,6 +156,7 @@ export default {
       // console.log(newVal)
       console.log('触发了')
       this.lyricArr = this.parseLyric(newVal)
+      this.currenIndex = 0
       console.log(this.lyricArr)
     },
     nowTime(newVal, oldVal) {

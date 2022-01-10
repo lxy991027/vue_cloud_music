@@ -104,7 +104,7 @@ export default {
 
       //   this.getAllSongs(ids)
       // } else {
-      this.songList = res.playlist.tracks
+      this.songList = this.$format._format(res.playlist.tracks)
     },
     // 订阅该歌单的用户列表
     async getCollect(params) {

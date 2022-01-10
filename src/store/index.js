@@ -4,7 +4,7 @@ import { Message } from 'element-ui'
 
 Vue.use(Vuex)
 const songFilter = (context, value, onlyAdd) => {
-  if (value.vip) {
+  if (value.vip && !value.cloud) {
     Message.error('该歌曲需要VIP，请使用客户端播放')
     return false
   }

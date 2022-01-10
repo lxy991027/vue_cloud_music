@@ -69,16 +69,18 @@ const login = ({ phone = '', pwd = '' }) => api.get(`/login/cellphone?phone=${ph
 // 获取用户详情
 const getUserInfo = ({ uid = '' }) => api.get(`/user/detail?uid=${uid}`, {})
 // 登录状态
-const logsss = () =>
-  api.get('/user/account', {
-    // cookie: document.cookie
-  })
+const logsss = () => api.get('/user/account', {})
 // 退出登录
-const logout = () => {
-  return api.get('/logout', {})
-}
+const logout = () => api.get('/logout', {})
 // 获取用户歌单
 const playlistUser = ({ uid = '', limit = 30, offset = 0 }) => api.get(`/user/playlist?uid=${uid}&limit=${limit}&offset=${offset}`, {})
+// 收藏的歌手列表
+const subArtist = () => api.get('/artist/sublist', {})
+
+const cloud = ({ limit = 200, offset = 0 }) => api.get(`/user/cloud?limit=${limit}&offset=${offset}`, {})
+
+const cloudDetail = ({ ids = '' }) => api.get(`/song/url?id=${ids}`, {})
+
 export default {
   getBanner,
   getHotMusicList,
@@ -111,5 +113,8 @@ export default {
   logsss,
   comment,
   playlistUser,
-  logout
+  logout,
+  subArtist,
+  cloud,
+  cloudDetail
 }

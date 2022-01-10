@@ -1,7 +1,11 @@
 <template>
   <div class="w">
     <div class="left">
-      <div class="oneMenu" @click="Jump">
+      <div class="oneMenu" @click="Jump(1)">
+        <span>我的音乐云盘</span>
+        <i class="iconfont icon-arrow" :class="{ rotate: menuHeight === 0 }"></i>
+      </div>
+      <div class="oneMenu" @click="Jump(2)">
         <span>我收藏的歌手</span>
         <i class="iconfont icon-arrow" :class="{ rotate: menuHeight === 0 }"></i>
       </div>
@@ -50,9 +54,9 @@ export default {
         return !item.subscribed
       })
       console.log(this.createdList, '????')
-      if (this.$route.path !== '/myuser/playlist') {
-        this.$router.push({ path: '/myuser/playlist', query: { id: this.createdList[0].id } })
-      }
+      // if (this.$route.path !== '/myuser/playlist') {
+      //   this.$router.push({ path: '/myuser/playlist', query: { id: this.createdList[0].id } })
+      // }
 
       this.collectList = res.playlist.filter((item) => {
         return item.subscribed
@@ -63,8 +67,13 @@ export default {
       //   this.$router.push({ path: 'my/playlist', query: { id: this.id } })
       // }
     },
-    Jump() {
-      this.$router.push({ path: '/myuser/favorite' })
+    Jump(type) {
+      if (type === 1) {
+        // cloudSongList
+        this.$router.push({ path: '/myuser/cloudSongList' })
+      } else {
+        this.$router.push({ path: '/myuser/favorite' })
+      }
     }
   }
 }
@@ -80,6 +89,7 @@ export default {
   align-items: center;
   padding-right: 10px;
   background-color: #f0f0f0;
+  margin-bottom: 5px;
   span {
     font-size: 14px;
   }

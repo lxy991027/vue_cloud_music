@@ -15,7 +15,7 @@
         <!-- tag栏区域 -->
         <Tag :list="HotMusicList" :settingList="HotMusicListTagSetting" :tagValue.sync="hotMusicListTagValue" @cilckTag="getHotMusicValue"></Tag>
         <div class="CD" ref="CD" :class="{ 'grid-template-columns6': PlayCdCount === 6, 'grid-template-columns5': PlayCdCount === 5 }">
-          <PlayCd v-for="(item, index) in playMusicList" :key="item.coverImgId" :playCdList="item" v-show="index < PlayCdCount"></PlayCd>
+          <PlayCd v-for="(item, index) in playMusicList" :key="item.id + index" :playCdList="item" v-show="index < PlayCdCount"></PlayCd>
         </div>
       </div>
       <!-- 新碟上架 -->
@@ -24,27 +24,27 @@
         <!-- tag栏区域  -->
         <Tag :list="NewCdListTag" :settingList="NewCdListTagSetting" :tagValue.sync="NewCdListListTagValue" @cilckTag="newCdListValue"></Tag>
         <div class="newCd" :class="{ 'grid-template-columns4 ': NewCdCount === 16, 'grid-template-columns3 ': NewCdCount === 9 }">
-          <NewCd v-for="(item, index) in NewCdList" :key="item.id" :NewCdList="item" v-show="index < NewCdCount"></NewCd>
+          <NewCd v-for="(item, index) in NewCdList" :key="item.id + index" :NewCdList="item" v-show="index < NewCdCount"></NewCd>
         </div>
       </div>
       <!-- 排行榜 -->
       <div class="rankingList">
         <h3>排行榜</h3>
         <div class="TopBox">
-          <RanKing v-for="(item, index) in TopList" :key="item.id" v-show="index < RanKingCount" :TopListslice="item"></RanKing>
+          <RanKing v-for="(item, index) in TopList" :key="item.id + index" v-show="index < RanKingCount" :TopListslice="item"></RanKing>
         </div>
       </div>
       <div class="MvBox">
         <h3>最新MV</h3>
         <Tag :list="mv_area" :settingList="mvListTagSetting" :tagValue.sync="mvListListTagValue" @cilckTag="mvListValue"></Tag>
         <div class="mvBoxList" :class="{ 'grid-template-columns5': MvListCount === 10, 'grid-template-columns4': MvListCount === 8 }">
-          <MvList v-for="(item, index) in mv_list" :key="item.id" :list="item" v-show="index < MvListCount"></MvList>
+          <MvList v-for="(item, index) in mv_list" :key="item.id + index" :list="item" v-show="index < MvListCount"></MvList>
         </div>
       </div>
       <div class="hotSinger">
         <h3>热门歌手</h3>
         <div class="hotSingerBox">
-          <hotsingerlist v-for="(item, index) in artists_list" :key="item.name" :list="item" v-show="index < hotsingerlistCount"></hotsingerlist>
+          <hotsingerlist v-for="(item, index) in artists_list" :key="item.id + index" :list="item" v-show="index < hotsingerlistCount"></hotsingerlist>
         </div>
       </div>
     </div>
@@ -183,7 +183,7 @@ export default {
     sizeChenge() {
       this.bodyWidth = document.body.clientWidth
       this.divBox = this.$refs.homeContainer.offsetWidth
-      console.log(this.bodyWidth)
+      // console.log(this.bodyWidth)
       this.showCd()
     },
     // 获取轮播图列表
@@ -228,7 +228,9 @@ export default {
       // const playMusicLists = HotMusicList
       // this.playMusicListSplice = playMusicLists
       // console.log(this.playMusicListSplice, '123456', playMusicLists)
-      if (this.bodyWidth >= 1970) {
+      if (this.divBox >= 1577) {
+        // console.log(this.bodyWidth, 1970, this.divBox)
+
         // this.daxiao = 8
         // this.playMusicListSplice = this.playMusicList.slice(0, 8)
         this.PlayCdCount = 8
@@ -240,7 +242,9 @@ export default {
         this.MvListCount = 12
         // this.artists_listSlice = this.artists_list
         this.hotsingerlistCount = 11
-      } else if (this.bodyWidth >= 1300) {
+      } else if (this.divBox >= 1041) {
+        // console.log(this.bodyWidth, 1300, this.divBox)
+
         // this.daxiao = 6
         // this.playMusicListSplice = this.playMusicList.slice(0, 6)
         this.PlayCdCount = 6
@@ -254,6 +258,8 @@ export default {
         this.hotsingerlistCount = 9
         // if (this.bodyWidth >= 1000)
       } else {
+        // console.log(this.bodyWidth, '无', this.divBox)
+
         // this.daxiao = 5
         // this.playMusicListSplice = this.playMusicList.slice(0, 5)
         this.PlayCdCount = 5

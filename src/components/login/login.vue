@@ -80,6 +80,14 @@ export default {
       } else {
         this.msg = '请输入正确的手机号'
       }
+    },
+    loginDialogVisible(newVal) {
+      if (!newVal) {
+        this.loginForm = {
+          phone: '',
+          pwd: ''
+        }
+      }
     }
   }
 }

@@ -11,6 +11,8 @@ import allCd from '@/views/allCd/allCd.vue'
 import songListMv from '@/views/songListMv/songListMv.vue'
 import myUser from '@/views/myUser'
 import Playlist from '@/views/myUser/playlist.vue'
+import Favorite from '@/views/myUser/favorite.vue'
+import cloudSongList from '@/views/myUser/cloudSongList.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -55,7 +57,11 @@ const routes = [
     path: '/myuser',
     name: 'myuser',
     component: myUser,
-    children: [{ path: '/myuser/playlist', name: 'myPlaylist', component: Playlist }]
+    children: [
+      { path: '/myuser/playlist', name: 'myPlaylist', component: Playlist },
+      { path: '/myuser/favorite', name: 'myFavorite', component: Favorite },
+      { path: '/myuser/cloudSongList', name: 'myCloudSongList', component: cloudSongList }
+    ]
   },
   {
     path: '/about',

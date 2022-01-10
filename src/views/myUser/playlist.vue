@@ -89,8 +89,8 @@ export default {
         console.log(res.songs, '里面')
         idsArr = this._formatSongs(res)
       }
-
-      this.songList = idsArr
+      console.log(this.$format.b, '格式化函数')
+      this.songList = this.$format._format(idsArr)
       this.total = idsArr.length
       // this.isLoading = false
     },

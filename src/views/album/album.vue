@@ -78,7 +78,7 @@ export default {
       // console.log(res)
       this.details = res.album
       console.log(this.details.artists[0].name)
-      this.songList = res.songs
+      this.songList = this.$format._format(res.songs)
       // .map((item) => {
       //   return {
       //     id: String(item.id),

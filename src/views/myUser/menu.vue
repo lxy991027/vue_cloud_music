@@ -55,12 +55,22 @@ export default {
         }
       }
     }
+  },
+  watch: {
+    $route: {
+      handler() {
+        this.id = this.$route.query.id
+        // this.init()
+      },
+      deep: true
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 .menu {
+  margin-bottom: 5px;
   .oneMenu {
     width: 100%;
     height: 40px;

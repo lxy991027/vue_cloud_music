@@ -19,11 +19,14 @@ import Videojs from 'video.js'
 
 import 'video.js/dist/video-js.css'
 
+import f from '@/js/_format.js'
+
 import '@/api/filter.js'
 Vue.prototype.$video = Videojs
 
 Vue.prototype.$http = http
 
+Vue.prototype.$format = f
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false

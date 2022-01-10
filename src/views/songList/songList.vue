@@ -29,7 +29,7 @@ export default {
       if (res.code !== 200) return this.$message.error('歌手信息获取失败')
       // this.artist[0] = res.artist
       // console.log(this.artist, '7489')
-      this.hotSongs = res.hotSongs
+      this.hotSongs = this.$format._format(res.hotSongs)
 
       console.log(this.hotSongs)
     }

@@ -195,7 +195,7 @@ export default {
       this.jindu = []
       // 切换下一首就清空歌词索引
       // this.$refs.lyric.clearCurrenIndex()
-      this.clearLyric()
+
       // this.currenIndex = 0
       // 保存当前播放的音乐对象
       this.nowSong[0] = this.playList[index]
@@ -205,10 +205,22 @@ export default {
       this.nowSongIndex = index
       // console.log(this.nowSong, '当前播放的歌曲', this.nowSongIndex)
       // 把当前音乐的url赋值给audio标签
-      this.$refs.music.src = this.playList[index].url
-      this.$refs.music.play()
-      // 把当前播放的音乐的id赋值给vuex中的变量，方便其他组件检测
-      this.$store.state.playId = this.playList[index].id
+      this.getSongUrl(this.playList[index].id, index)
+      // this.clearLyric()
+      // if (url) {
+      //   console.log(url, 'URL2')
+      //   if (url.code !== 200) {
+      //     this.$store.state.isPlayed = false
+      //     return this.$message.error('播放失败')
+      //   }
+      //   // this.$store.state.isPlayed = false
+      //   // console.log(url)
+      //   this.$refs.music.src = url.url
+      // }
+      // this.$refs.music.src = this.playList[index].url
+      // this.$refs.music.play()
+      // // 把当前播放的音乐的id赋值给vuex中的变量，方便其他组件检测
+      // this.$store.state.playId = this.playList[index].id
       // setInterval((params) => {})
     },
     next() {
@@ -685,11 +697,40 @@ export default {
       this.nowSongTime = 0
     },
     clearLyric() {
-      if (this.$refs.lyric) this.$refs.lyric.clearCurrenIndex()
+      if (this.LyricTop === -513) {
+        // console.log('触发了0')
+        this.$refs.lyric.clearCurrenIndex()
+      }
+      // this.$refs.lyric.clearCurrenIndex()
       // console.log(this.$refs.lyric)
       // console.log(this.$refs.lyric.clearCurrenIndex)
       this.$bus.$emit('clearLyric', 'ok')
+    },
+    // 获取音乐的url
+    async getSongUrl(ids, index) {
+      // 把当前播放的音乐的id赋值给vuex中的变量，方便其他组件检测
+      this.$store.state.playId = this.playList[index].id
+
+      const { data: res } = await this.$http.cloudDetail({ ids })
+      console.log(res, 'url')
+      if (res.code !== 200) return this.$message.error('歌曲播放失败')
+
+      console.log(res.data[0], 'URL2')
+      if (res.data[0].code !== 200) {
+        this.$store.state.isPlayed = false
+        return this.$message.error('播放失败')
+      }
+      // this.$store.state.isPlayed = false
+      // console.log(url)
+      this.$refs.music.src = res.data[0].url
+
+      // this.$refs.music.src = this.playList[index].url
+      this.$refs.music.play()
+
+      // setInterval((params) => {})
+      // return res.data[0]
     }
+
     //  this.$refs.lyric.clearCurrenIndex()
   },
 

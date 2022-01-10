@@ -9,7 +9,7 @@
     </div>
     <div class="tableListMain">
       <!-- isPlay(item.id) -->
-      <div class="rows" v-for="(item, index) in Songs" :key="item.id" :class="{ background: isbacground(index), vip: item.vip, nowPlay: nowSong(item.id), license: item.license }">
+      <div class="rows" v-for="(item, index) in list" :key="item.id" :class="{ background: isbacground(index), vip: item.vip && !item.cloud, nowPlay: nowSong(item.id), license: item.license && !item.cloud }">
         <div class="columnIndex">
           <div class="audio-icon" v-if="isPlay(item.id)">
             <div class="column" style="animation-delay: -1.2s"></div>
@@ -19,10 +19,12 @@
             <div class="column" style="animation-delay: -0.6s"></div>
           </div>
           <em v-if="!isPlay(item.id)">{{ index + 1 }}</em>
-          <template v-if="!item.license">
+          <!-- v-if="!item.license" -->
+          <template>
             <a href="javascript:;" class="el-icon-video-play play" @click="addSong(item)" v-if="!isPlay(item.id)"></a>
             <a href="javascript:;" class="el-icon-video-pause play" @click="zanting" v-if="isPlay(item.id)"></a>
           </template>
+          <div v-if="item.cloud" class="cloud">云盘</div>
         </div>
         <div class="columnSong">
           <div class="name config">
@@ -67,24 +69,26 @@ export default {
       Songs: []
     }
   },
-  created() {
-    this.Songs = this.list.map((item) => {
-      return {
-        id: String(item.id),
-        name: item.name,
-        mvId: item.mv,
-        singer: item.ar,
-        album: item.al,
-        alia: item.alia,
-        vip: item.fee === 1,
-        license: item.st === -1,
-        duration: item.dt,
-        url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
-        publishTime: item.publishTime
-      }
-    })
-    console.log(this.Songs)
-  },
+  // created() {
+  //   this.Songs = this.list
+  //   .map((item) => {
+  //     return {
+  //       id: String(item.id),
+  //       name: item.name,
+  //       mvId: item.mv,
+  //       singer: item.ar,
+  //       album: item.al,
+  //       alia: item.alia,
+  //       vip: item.fee === 1,
+  //       license: item.st === -1,
+  //       duration: item.dt,
+  //       // url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
+  //       publishTime: item.publishTime,
+  //       cloud: item.pc
+  //     }
+  //   })
+  //   console.log(this.Songs)
+  // },
   methods: {
     isbacground(index) {
       if (index % 2 !== 0) {
@@ -114,30 +118,31 @@ export default {
         }
       }
     }
-  },
-  watch: {
-    list(newVal) {
-      if (this.isPlayList) {
-        this.Songs = newVal
-      } else {
-        this.Songs = newVal.map((item) => {
-          return {
-            id: String(item.id),
-            name: item.name,
-            mvId: item.mv,
-            singer: item.ar,
-            album: item.al,
-            alia: item.alia,
-            vip: item.fee === 1,
-            license: item.st === -1,
-            duration: item.dt,
-            url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
-            publishTime: item.publishTime
-          }
-        })
-      }
-    }
   }
+  // watch: {
+  //   list(newVal) {
+  //     if (this.isPlayList) {
+  //       this.Songs = newVal
+  //     } else {
+  //       this.Songs = newVal.map((item) => {
+  //         return {
+  //           id: String(item.id),
+  //           name: item.name,
+  //           mvId: item.mv,
+  //           singer: item.ar,
+  //           album: item.al,
+  //           alia: item.alia,
+  //           vip: item.fee === 1,
+  //           license: item.st === -1,
+  //           duration: item.dt,
+  //           // url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
+  //           publishTime: item.publishTime,
+  //           cloud: item.pc
+  //         }
+  //       })
+  //     }
+  //   }
+  // }
 }
 </script>
 
@@ -153,6 +158,7 @@ export default {
   background-color: #f0f0f0 !important;
 }
 .rows {
+  position: relative;
   display: flex;
   height: 50px;
   align-items: center;
@@ -315,5 +321,14 @@ export default {
   a {
     color: #ccc;
   }
+}
+.cloud {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0;
+  width: 12px;
+  font-size: 10px;
+  color: #ccc;
 }
 </style>
