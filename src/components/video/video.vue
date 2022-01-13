@@ -586,7 +586,7 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  padding: 48px 7px;
+  padding: 30px 7px;
   // background-color: black;
   // .video {
   //   width: 100%;

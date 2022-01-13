@@ -8,7 +8,7 @@
         <div class="info">
           <h3>{{ list.name }}</h3>
           <span>
-            <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in list.artists" :key="author.name">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
+            <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in list.artists" :key="author.id + k">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
           </span>
           <em><i class="el-icon-video-camera"></i>{{ list.playCount | setCount }}</em>
         </div>

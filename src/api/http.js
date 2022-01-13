@@ -38,6 +38,8 @@ const simiSong = ({ id = '' }) => api.get(`/simi/song?id=${id}`, {})
 /* ********* 歌曲评论 ********* */
 // 歌曲评论
 const commentSong = ({ id = '', limit = 20, offset = 0, before = 0, timestamp = 0 }) => api.get(`/comment/music?id=${id}&limit=${limit}&offset=${offset}&before=${before}&timestamp=${timestamp}`, {})
+const albumSub = ({ id = '', t = 1 }) => api.get(`/album/sub?id=${id}&t=${t}`, {})
+
 /*
  * 发送/删除评论
  * t: 0删除 1发送 2回复
@@ -50,10 +52,16 @@ const comment = ({ t = 1, type = 0, id = '', content = '', commentId = '' }) => 
 /* ********* 专辑 ********* */
 // 获取专辑内容
 const album = ({ id = '' }) => api.get(`/album?id=${id}`, {})
+// 专辑动态信息
+const albumDynamic = ({ id = '' }) => {
+  return api.get(`/album/detail/dynamic?id=${id}`, {})
+}
 // 专辑评论
 const albumComment = ({ id = '', limit = 20, offset = 0, before = 0, timestamp = 0 }) => api.get(`/comment/album?id=${id}&limit=${limit}&offset=${offset}&before=${before}&timestamp=${timestamp}`, {})
 // 获取歌手专辑
 const artistAlbum = ({ id = '', limit = 50, offset = 0 }) => api.get(`/artist/album?id=${id}&limit=${limit}&offset=${offset}`, {})
+// 收藏/取消收藏歌手
+const artistSub = ({ id = '', t = '1' }) => api.get(`/artist/sub?id=${id}&t=${t}`, {})
 // 歌单详情
 const playlistdetail = ({ id = '', s = 8 }) => api.get(`/playlist/detail?id=${id}&s=${s}`, {})
 // 歌单收藏用户
@@ -80,6 +88,10 @@ const subArtist = () => api.get('/artist/sublist', {})
 const cloud = ({ limit = 200, offset = 0 }) => api.get(`/user/cloud?limit=${limit}&offset=${offset}`, {})
 
 const cloudDetail = ({ ids = '' }) => api.get(`/song/url?id=${ids}`, {})
+// 获取我收藏的专辑
+const getAlbumSublist = ({ limit = 25, offset = 0 }) => api.get(`/album/sublist?limit=${limit}&offset=${offset}`, {})
+// 收藏、取消歌单 1：收藏 2取消
+const subPlayList = ({ t = 1, id = '' }) => api.get(`/playlist/subscribe?t=${t}&id=${id}`, {})
 
 export default {
   getBanner,
@@ -116,5 +128,10 @@ export default {
   logout,
   subArtist,
   cloud,
-  cloudDetail
+  cloudDetail,
+  artistSub,
+  albumDynamic,
+  albumSub,
+  getAlbumSublist,
+  subPlayList
 }

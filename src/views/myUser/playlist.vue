@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="playlist-continer">
     <div class="TopText">
       <div class="box">
         <div class="img">
@@ -26,12 +26,13 @@
       </div>
     </div>
     <div class="count">
-      <span>包含歌曲列表</span>
+      <span>包含歌曲列表({{ total }})</span>
       <!-- <em>{{ songList.length + '首歌' }}</em> -->
       <div class="list">
         <song-list :list="songList"></song-list>
       </div>
     </div>
+    <div class="msg" ref="msg">{{ msg }}</div>
   </div>
 </template>
 
@@ -43,13 +44,22 @@ export default {
       id: '',
       details: {},
       songList: [],
-      total: 0
+      total: 0,
+      page: 1,
+      sliceArr: [],
+      msg: '下拉加载',
+      load: false,
+      top: 0
     }
   },
   mounted() {
     this.id = this.$route.query.id
     // 歌单详情
-    this.getDetail({ id: this.id, s: '' })
+    this.getDetail({ id: this.id, s: 8 })
+
+    window.onscroll = () => {
+      this.top = document.body.scrollTop + document.documentElement.scrollTop
+    }
   },
   components: {
     songList
@@ -66,33 +76,33 @@ export default {
       this.details = res.playlist
 
       const ids = res.playlist.trackIds
-
+      this.total = ids.length
       this.getAllSongs(ids)
     },
     // 登录后根据ids获取所有歌曲列表
-    async getAllSongs(ids) {
-      const sliceArr = []
-      const num = 500
-      let idsArr = []
+    getAllSongs(ids) {
+      const num = 100
 
-      // 数组过长 每500份一组
+      // 数组过长 每100份一组
       for (let index = 0; index < ids.length; index += num) {
-        sliceArr.push(ids.slice(index, index + num))
+        this.sliceArr.push(ids.slice(index, index + num))
       }
-
-      for (let i = 0; i < sliceArr.length; i++) {
-        const arrs = []
-        sliceArr[i].map((d) => {
-          arrs.push(d.id)
-        })
-        const { data: res } = await this.$http.songDetail({ ids: arrs.join(','), timestamp: new Date().valueOf() + i })
-        console.log(res.songs, '里面')
-        idsArr = this._formatSongs(res)
-      }
-      console.log(this.$format.b, '格式化函数')
-      this.songList = this.$format._format(idsArr)
-      this.total = idsArr.length
-      // this.isLoading = false
+      this.getList({ slice: this.sliceArr, page: this.page })
+    },
+    async getList({ slice, page, cb }) {
+      const pages = page - 1
+      const arrs = []
+      slice[pages].map((item) => {
+        arrs.push(item.id)
+      })
+      console.log(arrs)
+      const { data: res } = await this.$http.songDetail({ ids: arrs.join(','), timestamp: new Date().valueOf() + pages })
+      console.log(res, '数据')
+      if (res.code !== 200) return this.$message.error('数据获取失败')
+      // 格式化方法
+      this.songList = [...this.songList, ...this.$format._format(res.songs)]
+      this.load = true
+      if (cb) cb()
     },
     _formatSongs(list) {
       const ret = []
@@ -108,6 +118,43 @@ export default {
         }
       })
       return ret
+    },
+    cb() {
+      // this.page++
+      // this.currentChange(this.page)
+      this.page++
+      const pages = this.page - 1
+      this.msg = '加载中...'
+      // this.offset++
+      // setTimeout(() => {
+      //   console.log('被调用了')
+      //   this.load = true
+      //   this.msg = '加载更多'
+      // }, 2000)
+
+      if (pages >= this.sliceArr.length) {
+        this.msg = '已经到最底下了'
+        this.load = true
+        return
+      }
+      // console.log(this.hotAlbums.length)
+      // console.log(this.hotAlbums.length >= this.total)
+      this.getList({
+        cb: () => {
+          this.load = true
+          this.msg = '加载更多'
+        },
+        page: this.page,
+        slice: this.sliceArr
+      })
+    },
+    getAbsTop(_) {
+      let Top = _.offsetTop
+      while (_.offsetParent != null) {
+        _ = _.offsetParent
+        Top += _.offsetTop
+      }
+      return Top
     }
   },
   watch: {
@@ -115,20 +162,37 @@ export default {
       handler() {
         this.details = {}
         this.songList = []
+        this.sliceArr = []
+        this.page = 1
         this.id = this.$route.query.id
         // this.chengePach()
         // this.showTag = false
         // this.optionSetting.nowStatus = this.$route.path
         // this.showTag = true
-        this.getDetail({ id: this.id, s: '' })
+        this.getDetail({ id: this.id, s: 8 })
       }
       // deep: true
+    },
+    top(newVal, oldVal) {
+      if (!this.load) return
+      if (this.getAbsTop(this.$refs.msg) - newVal < document.documentElement.clientHeight) {
+        this.load = false
+        this.cb()
+        console.log('触发了')
+      }
     }
+  },
+  beforeDestroy() {
+    window.onscroll = null
+    console.log('销毁了')
   }
 }
 </script>
 
 <style lang="less" scoped>
+.playlist-continer {
+  padding-bottom: 15px;
+}
 .TopText {
   position: relative;
   width: 100%;
@@ -248,6 +312,7 @@ export default {
         width: 249px;
         display: flex;
         justify-content: space-between;
+        margin-top: 5px;
       }
     }
   }
@@ -268,5 +333,14 @@ export default {
 .list {
   margin-top: 15px;
   width: 100%;
+}
+.msg {
+  width: 100%;
+  height: 20px;
+  text-align: center;
+  background-color: #d9d9d9;
+  margin-top: 15px;
+  // margin-bottom: 15px;
+  border-radius: 10px;
 }
 </style>

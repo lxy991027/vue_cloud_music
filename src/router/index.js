@@ -13,6 +13,7 @@ import myUser from '@/views/myUser'
 import Playlist from '@/views/myUser/playlist.vue'
 import Favorite from '@/views/myUser/favorite.vue'
 import cloudSongList from '@/views/myUser/cloudSongList.vue'
+import AlbumSunlist from '@/views/myUser/albumSunlist.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -60,7 +61,9 @@ const routes = [
     children: [
       { path: '/myuser/playlist', name: 'myPlaylist', component: Playlist },
       { path: '/myuser/favorite', name: 'myFavorite', component: Favorite },
-      { path: '/myuser/cloudSongList', name: 'myCloudSongList', component: cloudSongList }
+      { path: '/myuser/cloudSongList', name: 'myCloudSongList', component: cloudSongList },
+      // AlbumSunlist
+      { path: '/myuser/albumSunlist', name: 'myAlbumSunlist', component: AlbumSunlist }
     ]
   },
   {

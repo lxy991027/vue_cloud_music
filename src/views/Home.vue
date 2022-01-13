@@ -85,7 +85,7 @@ export default {
         offset: 0,
         cat: ''
       },
-      playMusicList: [],
+      playMusicList: [{}],
       // playMusicListSplice: [],
       // 新碟上架tag
       NewCdListTag: [
@@ -163,6 +163,7 @@ export default {
     // this.$nextTick(() => {
     //   window.scrollTo(0, 0)
     // })
+    this.getHotMusicValue()
     this.getBanner()
     this.getHotMusicList()
     this.newCdListValue()
@@ -176,12 +177,12 @@ export default {
     // this.showCd()
     // this.showCd(this.playMusicList)
     window.addEventListener('resize', this.sizeChenge)
-    this.getHotMusicValue()
+    // this.getHotMusicValue()
   },
   methods: {
     // 窗口变动事件
     sizeChenge() {
-      this.bodyWidth = document.body.clientWidth
+      // this.bodyWidth = document.body.clientWidth
       this.divBox = this.$refs.homeContainer.offsetWidth
       // console.log(this.bodyWidth)
       this.showCd()
@@ -423,10 +424,8 @@ h3 {
 .newCd {
   margin-top: 15px;
   display: grid;
-  // justify-content: space-around;
   grid-template-columns: repeat(5, 1fr);
   grid-column-gap: 15px;
-  // grid-row-gap: 7%;
   grid-row-gap: 15px;
 }
 .TopBox {

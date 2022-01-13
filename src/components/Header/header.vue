@@ -88,7 +88,7 @@ export default {
       // window.sessionStorage.removeItem('cookie')
       // window.sessionStorage.removeItem('userInfo')
       this.setLogin(false)
-      this.setUserInfo()
+      this.setUserInfo(null)
 
       // if (this.$route.path.indexOf('/my') >= 0) {
       //     this.$router.push({ path: '/' })
@@ -205,6 +205,9 @@ export default {
   .user {
     width: 100%;
     height: 100%;
+
+    border-radius: 50%;
+    overflow: hidden;
     img {
       width: 100%;
       height: 100%;

@@ -16,6 +16,7 @@
       </div>
       <div class="right" ref="right">
         <div class="info" v-for="item in info" :key="item.id">
+          <div class="cloud" v-if="item.cloud">云盘</div>
           <h3 class="title">
             {{ item.name }}
             <router-link class="mv-name" :to="{ path: '/mv', query: { id: item.mvId } }" v-if="item.mvId">
@@ -45,7 +46,7 @@
           </p>
           <div class="song-oper">
             <!-- @click="plyaing(info)"> -->
-            <span :class="['play-btn', 'play-all', songDisable(item)]" @click="plyaing(item)"><i :class="['iconfont', playFontIcon]"></i> {{ item.vip ? 'VIP尊享' : isPlay ? '暂停播放' : '立即播放' }}</span>
+            <span :class="['play-btn', 'play-all', songDisable(item)]" @click="plyaing(item)"><i :class="['iconfont', playFontIcon]"></i> {{ item.vip && !item.cloud ? 'VIP尊享' : isPlay ? '暂停播放' : '立即播放' }}</span>
             <!-- <template v-if="!isLogin">
               <span class="play-btn play-collect" @click="showAddList"><i class="iconfont icon-collect"></i> 收藏</span>
             </template>
@@ -94,7 +95,7 @@ export default {
     this.resize()
     window.addEventListener('resize', this.resize)
     this.$bus.$on('clearLyric', (data) => {
-      console.log('我是School组件，收到了数据', data)
+      console.log('我是Song组件，收到了数据', data)
       this.clearLyric()
     })
   },
@@ -109,7 +110,7 @@ export default {
     async getSongDetail() {
       const { data: res } = await this.$http.songDetail({ ids: this.sId, timestamp: new Date().valueOf() })
       if (res.code !== 200) {
-        return this.$msg.error('数据请求失败')
+        return this.$message.error('数据请求失败')
       }
       console.log(res)
       // 是否有版权播放
@@ -127,7 +128,8 @@ export default {
           license: item.license,
           duration: item.dt,
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
-          publishTime: item.publishTime
+          publishTime: item.publishTime,
+          cloud: item.pc
         }
       })
       console.log(this.info)
@@ -137,7 +139,7 @@ export default {
       const { data: res } = await this.$http.simiSong({ id: this.sId })
 
       if (res.code !== 200) {
-        return this.$msg.error('数据请求失败')
+        return this.$message.error('数据请求失败')
       }
 
       this.simiSong = res.songs.map((item) => {
@@ -152,7 +154,8 @@ export default {
           url: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`,
           vip: item.fee === 1,
           license: item.license,
-          publishTime: item.publishTime
+          publishTime: item.publishTime,
+          cloud: item.pc
         }
       })
       console.log(this.simiSong)
@@ -188,13 +191,13 @@ export default {
       // 若当前唔歌曲 或者 当前播放歌曲不是本页显示的歌曲  立即播放当前页面歌曲
       if (!this.isPlayed || this.playId !== params.id) {
         // 无版权及vip不可播放
-        if (params.license) {
-          this.$msg.error('由于版权保护，您所在的地区暂时无法使用。')
+        if (params.vip && !params.cloud) {
+          this.$message.error('付费歌曲，请在网易云音乐播放')
           return
         }
 
-        if (params.vip) {
-          this.$msg.error('付费歌曲，请在网易云音乐播放')
+        if (params.license && !params.cloud) {
+          this.$message.error('由于版权保护，您所在的地区暂时无法使用。')
           return
         }
 
@@ -210,7 +213,9 @@ export default {
       this.lyrictWidth = this.$refs.right.offsetWidth
     },
     clearLyric() {
-      this.$refs.Lyric[0].clearCurrenIndex()
+      if (this.$refs.Lyric[0]) {
+        this.$refs.Lyric[0].clearCurrenIndex()
+      }
     }
   },
   computed: {
@@ -226,7 +231,7 @@ export default {
     // 若是无版权获取vip歌曲 播放按钮置灰
     songDisable() {
       return (item) => {
-        return item.license || item.vip ? 'disable' : ''
+        return (item.license || item.vip) && !item.cloud ? 'disable' : ''
       }
     }
   },
@@ -311,6 +316,7 @@ export default {
     margin-left: 15px;
     min-width: 0;
     .info {
+      position: relative;
       .title {
         display: flex;
         align-items: center;
@@ -393,5 +399,15 @@ export default {
 .disable {
   background: #ccc;
   cursor: not-allowed;
+}
+.cloud {
+  position: absolute;
+  top: -10px;
+  // transform: translateY(-50%);
+  left: 0;
+  width: 30px;
+  font-size: 15px;
+  color: #e60026;
+  user-select: none;
 }
 </style>

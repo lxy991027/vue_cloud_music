@@ -12,6 +12,10 @@
             <div class="singerText">
               <div class="name-title">
                 <h1>{{ item.name }}</h1>
+                <div class="collect" v-if="userInfo !== null">
+                  <!-- {{ userInfo }} -->
+                  <a href="javascript:; " :class="{ no: item.followed, yes: !item.followed }" @click="getArtistSub(item)"><i class="iconfont icon-collect"></i>{{ item.followed ? '取消收藏' : '收藏' }}</a>
+                </div>
               </div>
               <div class="Text">
                 {{ item.briefDesc ? item.briefDesc : '暂无简介' }}
@@ -55,6 +59,7 @@
 <script>
 // import songList from '@/components/songList/song-list.vue'
 import Tag from '@/components/Tag/tag.vue'
+import { mapState } from 'vuex'
 // import NewCd from '@/components/NewCdList/NewCd.vue'
 export default {
   mounted() {
@@ -179,12 +184,34 @@ export default {
       } else {
         this.$router.push('/songListMv?id=' + this.Uid)
       }
+    },
+    async getArtistSub(item) {
+      console.log(item.followed)
+      let t = 0
+      t = item.followed ? 0 : 1
+      console.log(t)
+      const { data: res } = await this.$http.artistSub({ id: this.Uid, t: t })
+      console.log(res)
+      if (res.code !== 200) return t === 0 ? this.$message.success('取消收藏失败') : this.$message.success('收藏失败')
+
+      if (t === 0) {
+        item.followed = false
+        this.$message.success('取消收藏成功')
+      } else {
+        item.followed = true
+        this.$message.success('收藏成功')
+      }
+
+      // this.getArtists()
     }
   },
   components: {
     // songList,
     Tag
     // NewCd
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   watch: {
     '$route.query.id': {
@@ -268,7 +295,37 @@ export default {
         align-items: center;
         width: 100%;
         height: 20%;
-
+        .collect {
+          margin-left: 15px;
+          a {
+            padding: 0 17px;
+            position: relative;
+            display: block;
+            width: 110px;
+            height: 30px;
+            border-radius: 15px;
+            line-height: 30px;
+            text-align: right;
+            background-color: pink;
+            font-size: 15px;
+            color: #f5f5f5;
+            i {
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              left: 10px;
+              font-size: 15px;
+            }
+          }
+          .no {
+            background-color: #fa7a7a;
+          }
+          .yes {
+            background-color: #ffffff;
+            color: #000;
+            padding: 0 35px;
+          }
+        }
         h1 {
           display: inline-block;
           // height: 100%;

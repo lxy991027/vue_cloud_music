@@ -9,7 +9,14 @@
             </div>
             <div class="info">
               <div class="cover-title">
-                {{ details.name }}
+                <span> {{ details.name }}</span>
+                <!-- {{ details.creator.userId }}//{{ this.userInfo.userId }} -->
+                <template v-if="details.creator && userInfo !== null">
+                  <div class="collect" v-if="!(details.creator.userId === userInfo.userId)">
+                    <!-- @click="subAlbum(dynamic)" -->
+                    <a href="javascript:; " :class="{ no: details.subscribed, yes: !details.subscribed }" @click="subAlbum(details)"><i class="iconfont icon-collect"></i>{{ details.subscribed ? '取消收藏' : '收藏' }}</a>
+                  </div>
+                </template>
               </div>
               <div class="cover-author" v-if="details.creator">
                 <!-- <img :src="details.creator.avatarUrl" class="cover-avatar"></img> -->
@@ -62,6 +69,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import songList from '@/components/songList/song-list.vue'
 import playlistRecommend from '@/components/playlistRecommend/playlistRecommend.vue'
 import Comments from '@/components/comments/comments.vue'
@@ -125,7 +133,32 @@ export default {
       }
       this.playlists = res.playlists
       // console.log(this.playlists)
+    },
+    async subAlbum(item) {
+      let t = 2
+      t = item.subscribed ? 2 : 1
+      const { data: res } = await this.$http.subPlayList({ id: this.id, t: t })
+      console.log(res)
+      if (res.code !== 200) {
+        if (t === 2) {
+          this.$message.success('取消收藏失败')
+        } else {
+          this.$message.success('收藏失败')
+        }
+        return this.$message.error('数据请求失败')
+      }
+      if (t === 2) {
+        item.subscribed = false
+        this.$message.success('取消收藏成功')
+      } else {
+        item.subscribed = true
+        this.$message.success('收藏成功')
+      }
+      // this.dynamic.isSub = Number(!this.dynamic.isSub)
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   components: {
     songList,
@@ -221,6 +254,48 @@ export default {
         .cover-title {
           font-size: 24px;
           font-weight: bold;
+          display: flex;
+          align-items: center;
+          // overflow: hidden !important;
+          // text-overflow: ellipsis;
+          // white-space: nowrap;
+          span {
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .collect {
+            display: inline-block;
+            margin-left: 15px;
+            a {
+              padding: 0 17px;
+              position: relative;
+              display: block;
+              width: 110px;
+              height: 30px;
+              border-radius: 15px;
+              line-height: 30px;
+              text-align: right;
+              background-color: pink;
+              font-size: 15px;
+              color: #f5f5f5;
+              i {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                left: 10px;
+                font-size: 15px;
+              }
+            }
+            .no {
+              background-color: #fa7a7a;
+            }
+            .yes {
+              background-color: #ffffff;
+              color: #000;
+              padding: 0 35px;
+            }
+          }
         }
         .cover-tags {
           padding-bottom: 5px;

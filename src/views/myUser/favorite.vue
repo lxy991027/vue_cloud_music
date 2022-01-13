@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="title">
-      <h1>歌手列表({{ total }})</h1>
+      <h1>我收藏的歌手({{ total }})</h1>
     </div>
     <ul class="mainBox">
       <li v-for="(item, index) in list" :key="item.id + index">

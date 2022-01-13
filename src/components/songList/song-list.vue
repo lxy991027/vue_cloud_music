@@ -9,7 +9,7 @@
     </div>
     <div class="tableListMain">
       <!-- isPlay(item.id) -->
-      <div class="rows" v-for="(item, index) in list" :key="item.id" :class="{ background: isbacground(index), vip: item.vip && !item.cloud, nowPlay: nowSong(item.id), license: item.license && !item.cloud }">
+      <div class="rows" v-for="(item, index) in list" :key="item.id + index" :class="{ background: isbacground(index), vip: item.vip && !item.cloud, nowPlay: nowSong(item.id), license: item.license && !item.cloud }">
         <div class="columnIndex">
           <div class="audio-icon" v-if="isPlay(item.id)">
             <div class="column" style="animation-delay: -1.2s"></div>
@@ -20,7 +20,7 @@
           </div>
           <em v-if="!isPlay(item.id)">{{ index + 1 }}</em>
           <!-- v-if="!item.license" -->
-          <template>
+          <template v-if="!item.license || item.cloud">
             <a href="javascript:;" class="el-icon-video-play play" @click="addSong(item)" v-if="!isPlay(item.id)"></a>
             <a href="javascript:;" class="el-icon-video-pause play" @click="zanting" v-if="isPlay(item.id)"></a>
           </template>
@@ -40,7 +40,7 @@
           </template>
         </div>
         <div class="columnSinger config">
-          <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in item.singer" :key="author.name">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
+          <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in item.singer" :key="author.id + k">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
         </div>
         <div class="columnAlbum config">
           <router-link class="songlist-album" :to="{ path: '/album', query: { id: item.album.id } }" v-if="item.album">{{ item.album.name }}</router-link>
@@ -52,7 +52,7 @@
           </div>
           <div class="btn" v-else>
             <i class="el-icon-plus add" @click="onlyAddSong(item)"></i>
-            <i class="iconfont icon-collect heart"></i>
+            <!-- <i class="iconfont icon-collect heart"></i> -->
           </div>
         </div>
       </div>
@@ -330,5 +330,6 @@ export default {
   width: 12px;
   font-size: 10px;
   color: #ccc;
+  user-select: none;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="hotsinger-continer">
-    <router-link :to="{ path: 'singer', query: { id: list.id } }">
+    <router-link :to="{ path: '/singer', query: { id: list.id } }">
       <div class="img">
         <img :src="list.picUrl + '?param=120y120'" alt="" />
       </div>

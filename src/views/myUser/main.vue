@@ -1,16 +1,21 @@
 <template>
   <div class="w">
     <div class="left">
-      <div class="oneMenu" @click="Jump(1)">
-        <span>我的音乐云盘</span>
-        <i class="iconfont icon-arrow" :class="{ rotate: menuHeight === 0 }"></i>
-      </div>
-      <div class="oneMenu" @click="Jump(2)">
-        <span>我收藏的歌手</span>
-        <i class="iconfont icon-arrow" :class="{ rotate: menuHeight === 0 }"></i>
-      </div>
       <Menu title="我创建的歌单" :list="createdList" v-if="createdList.length"></Menu>
       <Menu title="我收藏的歌单" :list="collectList" v-if="collectList.length"></Menu>
+
+      <div class="oneMenu" @click="Jump(2)">
+        <span>我收藏的歌手</span>
+        <i class="iconfont icon-arrow rotate" :class="{ rotate: menuHeight === 0 }"></i>
+      </div>
+      <div class="oneMenu" @click="Jump(3)">
+        <span>我收藏的专辑</span>
+        <i class="iconfont icon-arrow rotate" :class="{ rotate: menuHeight === 0 }"></i>
+      </div>
+      <div class="oneMenu" @click="Jump(1)">
+        <span>我的音乐云盘</span>
+        <i class="iconfont icon-arrow rotate" :class="{ rotate: menuHeight === 0 }"></i>
+      </div>
     </div>
     <div class="right">
       <router-view></router-view>
@@ -70,9 +75,14 @@ export default {
     Jump(type) {
       if (type === 1) {
         // cloudSongList
+        if (this.$route.path === '/myuser/cloudSongList') return
         this.$router.push({ path: '/myuser/cloudSongList' })
-      } else {
+      } else if (type === 2) {
+        if (this.$route.path === '/myuser/favorite') return
         this.$router.push({ path: '/myuser/favorite' })
+      } else {
+        if (this.$route.path === '/myuser/albumSunlist') return
+        this.$router.push({ path: '/myuser/albumSunlist' })
       }
     }
   }
@@ -113,5 +123,8 @@ export default {
   min-width: 0;
   // height: 100vh;
   // background-color: red;
+}
+.rotate {
+  transform: rotate(-90deg);
 }
 </style>

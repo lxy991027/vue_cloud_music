@@ -56,6 +56,9 @@ export default {
 ul {
   display: flex;
   justify-content: center;
+  // background-color: pink;
+  font-size: 15px;
+  height: 24px;
   li {
     cursor: pointer;
     margin: 0 24px;

@@ -192,6 +192,9 @@ export default {
       this.nowSongTime = this.$refs.music.duration * 1000
     },
     playSong(index) {
+      // 解决暂停时播放新歌会播放半秒钟旧歌的BUG
+      this.$store.state.isPlayed = false
+      // ----------------------------------
       this.jindu = []
       // 切换下一首就清空歌词索引
       // this.$refs.lyric.clearCurrenIndex()
@@ -491,7 +494,7 @@ export default {
     },
     skipTime(e) {
       if (this.isUp) {
-        console.log('去你吗')
+        console.log('skipTime触发了')
         // 当点击滚动条位置也清空一次歌词索引
         // this.$refs.lyric.clearCurrenIndex()
         this.clearLyric()
@@ -718,6 +721,10 @@ export default {
       console.log(res.data[0], 'URL2')
       if (res.data[0].code !== 200) {
         this.$store.state.isPlayed = false
+        this.$refs.music.src = ''
+        this.nowSong = []
+        this.$store.state.playId = ''
+        clearTimeout(this.imgRotateTime)
         return this.$message.error('播放失败')
       }
       // this.$store.state.isPlayed = false
@@ -725,7 +732,10 @@ export default {
       this.$refs.music.src = res.data[0].url
 
       // this.$refs.music.src = this.playList[index].url
-      this.$refs.music.play()
+      // 解决暂停时播放新歌会播放半秒钟旧歌的BUG
+      this.$store.state.isPlayed = true
+      // ----------------------------------------------
+      // this.$refs.music.play()
 
       // setInterval((params) => {})
       // return res.data[0]

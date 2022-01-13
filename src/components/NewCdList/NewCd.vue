@@ -1,13 +1,15 @@
 <template>
   <div class="NewCd-contener">
     <router-link :to="{ path: '/album', query: { id: NewCdList.id } }" class="item">
-      <span class="type">{{ NewCdList.type }}</span>
+      <span class="type" v-if="NewCdList.type">{{ NewCdList.type }}</span>
       <div class="img">
         <img :src="NewCdList.picUrl + '?param=120y120'" alt="" />
       </div>
       <div class="boxRight">
         <h5>{{ NewCdList.name }}</h5>
-        <span>{{ NewCdList.artist.name }}</span>
+        <span>
+          <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in NewCdList.artists" :key="author.id + k">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
+        </span>
       </div>
     </router-link>
   </div>
@@ -100,7 +102,15 @@ export default {
     white-space: nowrap;
   }
   span {
+    width: 90%;
+    text-align: center;
     font-size: 10px;
+    a {
+      color: #333;
+    }
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }
 .NewCd-contener:hover h5 {
