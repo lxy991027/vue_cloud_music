@@ -1,7 +1,7 @@
 <template>
   <div class="mv-continer" @click="abc">
     <router-link :to="{ path: '/mv', query: { id: list.id } }">
-      <div class="box">
+      <div class="box" v-if="JSON.stringify(list) !== '{}'">
         <div class="img">
           <img :src="list.cover" alt="" />
         </div>

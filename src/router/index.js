@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '@/views/Home/Home.vue'
 import Singer from '@/views/singer/singer.vue'
 import Mv from '@/views/mv/mv.vue'
 import Song from '@/views/song/song.vue'

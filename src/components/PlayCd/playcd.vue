@@ -1,6 +1,6 @@
 <template>
   <div class="divcd">
-    <router-link :to="{ path: 'detail', query: { id: playCdList.id } }" class="faceImg">
+    <router-link :to="{ path: 'detail', query: { id: playCdList.id } }" class="faceImg" v-if="JSON.stringify(playCdList) !== '{}'">
       <div class="box">
         <img :src="playCdList.coverImgUrl + '?param=200y200'" alt="" />
         <span class="count"><i class="el-icon-headset"></i>{{ playCdList.playCount | setCount }}</span>
@@ -16,11 +16,7 @@
 
 <script>
 export default {
-  props: ['playCdList'] // filters: {
-  //   setCount(value) {
-  //     return (value / 10000).toFixed(1) + '万'
-  //   }
-  // }
+  props: ['playCdList']
 }
 </script>
 
@@ -30,9 +26,6 @@ export default {
   transition: transform 0.3s;
   position: relative;
   border-radius: 35px;
-  background-image: url(../../assets/lo.gif);
-  background-repeat: no-repeat;
-  background-size: 100%;
 
   // width: 200px;
   // height: auto;
@@ -73,6 +66,9 @@ export default {
     }
   }
   .box {
+    background-image: url(../../assets/lo.gif);
+    background-repeat: no-repeat;
+    background-size: 100%;
     border-radius: 35px;
     overflow: hidden;
     position: absolute;
