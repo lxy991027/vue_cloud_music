@@ -80,6 +80,7 @@ export default {
     align-items: center;
     padding-right: 10px;
     background-color: #f0f0f0;
+    cursor: pointer;
     span {
       font-size: 14px;
     }

@@ -53,9 +53,8 @@ const comment = ({ t = 1, type = 0, id = '', content = '', commentId = '' }) => 
 // 获取专辑内容
 const album = ({ id = '' }) => api.get(`/album?id=${id}`, {})
 // 专辑动态信息
-const albumDynamic = ({ id = '' }) => {
-  return api.get(`/album/detail/dynamic?id=${id}`, {})
-}
+const albumDynamic = ({ id = '' }) => api.get(`/album/detail/dynamic?id=${id}`, {})
+
 // 专辑评论
 const albumComment = ({ id = '', limit = 20, offset = 0, before = 0, timestamp = 0 }) => api.get(`/comment/album?id=${id}&limit=${limit}&offset=${offset}&before=${before}&timestamp=${timestamp}`, {})
 // 获取歌手专辑

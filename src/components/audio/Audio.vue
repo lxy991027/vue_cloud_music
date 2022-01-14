@@ -1155,7 +1155,7 @@ export default {
   height: 500px;
   background-color: #ffffff;
   right: 20px;
-  top: 80px;
+  top: 180px;
   z-index: 9;
   padding: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);

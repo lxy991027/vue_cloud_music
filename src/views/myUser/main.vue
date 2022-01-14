@@ -100,6 +100,7 @@ export default {
   padding-right: 10px;
   background-color: #f0f0f0;
   margin-bottom: 5px;
+  cursor: pointer;
   span {
     font-size: 14px;
   }
