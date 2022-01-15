@@ -47,6 +47,7 @@
           <div class="song-oper">
             <!-- @click="plyaing(info)"> -->
             <span :class="['play-btn', 'play-all', songDisable(item)]" @click="plyaing(item)"><i :class="['iconfont', playFontIcon]"></i> {{ item.vip && !item.cloud ? 'VIP尊享' : isPlay ? '暂停播放' : '立即播放' }}</span>
+            <span @click="chengeShowCollet(item)" class="play-btn shouchang" v-if="isLogin"> <i :class="['iconfont', 'icon-collect']"></i>收藏</span>
             <!-- <template v-if="!isLogin">
               <span class="play-btn play-collect" @click="showAddList"><i class="iconfont icon-collect"></i> 收藏</span>
             </template>
@@ -63,10 +64,12 @@
         </div>
       </div>
     </div>
+    <Collect ref="collect" v-if="showCollet" :close.sync="showCollet"></Collect>
   </div>
 </template>
 
 <script>
+import Collect from '@/components/collect/collect.vue'
 import similarSong from '@/components/similarSong/similarSong.vue'
 import { mapState, mapActions, mapMutations } from 'vuex'
 import lyric from '@/components/lyric/lyric.vue'
@@ -83,7 +86,8 @@ export default {
       Lyric: '',
       lyrictWidth: 0,
       cunSongTime: 0,
-      type: 0 // 0: 歌曲 1: mv 2: 歌单 3: 专辑  4: 电台 5: 视频 6: 动态
+      type: 0, // 0: 歌曲 1: mv 2: 歌单 3: 专辑  4: 电台 5: 视频 6: 动态,
+      showCollet: false
     }
   },
   created() {
@@ -216,10 +220,22 @@ export default {
       if (this.$refs.Lyric[0]) {
         this.$refs.Lyric[0].clearCurrenIndex()
       }
+    },
+
+    chengeShowCollet(item) {
+      this.showCollet = true
+      console.log(item.id)
+      console.log(this.$refs)
+      this.$nextTick(() => {
+        this.$refs.collect.Id = item.id
+        // console.log(this.$refs.collect)
+      })
+
+      // this.$refs.collect.Id = item.Id
     }
   },
   computed: {
-    ...mapState(['playId', 'isPlayed', 'playList', 'songTime']),
+    ...mapState(['playId', 'isPlayed', 'playList', 'songTime', 'isLogin']),
     isPlay() {
       console.log(this.playId === this.sId && this.isPlayed)
       return this.playId === this.sId && this.isPlayed
@@ -253,7 +269,8 @@ export default {
   components: {
     similarSong,
     lyric,
-    Comments
+    Comments,
+    Collect
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.resize)
@@ -409,5 +426,10 @@ export default {
   font-size: 15px;
   color: #e60026;
   user-select: none;
+}
+.shouchang {
+  i {
+    margin-right: 5px;
+  }
 }
 </style>

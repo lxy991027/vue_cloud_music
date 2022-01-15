@@ -52,21 +52,26 @@
           </div>
           <div class="btn" v-else>
             <i class="el-icon-plus add" @click="onlyAddSong(item)"></i>
-            <!-- <i class="iconfont icon-collect heart"></i> -->
+            <i class="iconfont icon-collect heart" @click="chengeShowCollet(item)" v-if="!myDetail"></i>
+            <i class="iconfont icon-del heart" @click="delSong(detailId, item.id, index)" v-else></i>
           </div>
         </div>
       </div>
     </div>
+    <Collect ref="collect" v-if="showCollet" :close.sync="showCollet"></Collect>
   </div>
 </template>
 
 <script>
+import Collect from '@/components/collect/collect.vue'
 import { mapActions, mapState, mapMutations } from 'vuex'
 export default {
-  props: ['list', 'isPlayList'],
+  props: ['list', 'isPlayList', 'myDetail', 'detailId'],
   data() {
     return {
-      Songs: []
+      Songs: [],
+      showCollet: false,
+      click: true
     }
   },
   // created() {
@@ -96,14 +101,51 @@ export default {
       }
       return true
     },
-    ...mapMutations(['zanting']),
+    ...mapMutations(['zanting', 'showDialog']),
     ...mapActions(['addSong', 'onlyAddSong']),
     delChenge(obj) {
       this.$emit('ondelete', obj)
+    },
+    chengeShowCollet(item) {
+      if (!this.isLogin) return this.showDialog(true)
+      this.showCollet = true
+      console.log(item.id)
+      console.log(this.$refs)
+      this.$nextTick(() => {
+        this.$refs.collect.Id = item.id
+        // console.log(this.$refs.collect)
+      })
+
+      // this.$refs.collect.Id = item.Id
+    },
+    delSong(detailId, itemId, index) {
+      if (!this.click) return
+      this.click = false
+      // console.log(id)
+      this.delPlayList(detailId, itemId, index)
+    },
+    async delPlayList(detailId, itemId, index) {
+      const { data: res } = await this.$http.addPlayList({ op: 'del', pid: detailId, tracks: itemId })
+      console.log(res, '删除')
+      if (res.status !== 200) {
+        this.click = true
+        return this.$message.error('未知错误')
+      }
+      if (res.body.code !== 200) {
+        this.click = true
+        return this.$message.error(res.body.message)
+      }
+      this.click = true
+      this.$message.success('删除成功', res.message)
+      this.list.splice(index, 1)
+      // this.$emit('update:close', false)
     }
   },
+  components: {
+    Collect
+  },
   computed: {
-    ...mapState(['playId', 'isPlayed']),
+    ...mapState(['playId', 'isPlayed', 'isLogin']),
     isPlay() {
       return (id) => {
         if (this.playId === id && this.isPlayed) {

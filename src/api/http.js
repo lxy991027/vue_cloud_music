@@ -91,7 +91,8 @@ const cloudDetail = ({ ids = '' }) => api.get(`/song/url?id=${ids}`, {})
 const getAlbumSublist = ({ limit = 25, offset = 0 }) => api.get(`/album/sublist?limit=${limit}&offset=${offset}`, {})
 // 收藏、取消歌单 1：收藏 2取消
 const subPlayList = ({ t = 1, id = '' }) => api.get(`/playlist/subscribe?t=${t}&id=${id}`, {})
-
+// 添加歌曲到歌单
+const addPlayList = ({ op = 'add', pid = '', tracks = '' }) => api.get(`/playlist/tracks?op=${op}&pid=${pid}&tracks=${tracks}`, {})
 export default {
   getBanner,
   getHotMusicList,
@@ -132,5 +133,6 @@ export default {
   albumDynamic,
   albumSub,
   getAlbumSublist,
-  subPlayList
+  subPlayList,
+  addPlayList
 }

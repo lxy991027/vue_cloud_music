@@ -28,6 +28,16 @@ export default {
   created() {
     this.login()
   },
+  // mounted() {
+  //   window.addEventListener('unload', function(event) {
+  //     // event.returnValue = '我在这写点东西...'
+  //     alert('拜拜')
+  //     // this.login()
+  //     for (let i = 0; i < 999999; i++) {
+  //       console.log('你好')
+  //     }
+  //   })
+  // },
   methods: {
     ...mapMutations(['showDialog', 'setUserInfo', 'setLogin']),
     async login() {

@@ -12,6 +12,7 @@
           <div class="cover-author" v-if="details.creator">
             <!-- <img :src="details.creator.avatarUrl" class="cover-avatar"></img> -->
             <router-link :to="{ path: '/user', query: { id: details.creator.userId } }">
+              <!-- <span>{{}}</span> -->
               <img :src="details.creator.avatarUrl" alt="" />
               <div class="cover-name">{{ details.creator.nickname }}</div>
             </router-link>
@@ -28,8 +29,8 @@
     <div class="count">
       <span>包含歌曲列表({{ total }})</span>
       <!-- <em>{{ songList.length + '首歌' }}</em> -->
-      <div class="list">
-        <song-list :list="songList"></song-list>
+      <div class="list" v-if="JSON.stringify(details) !== '{}'">
+        <song-list :list="songList" :myDetail="details.creator.userId === this.userInfo.userId" :detailId="id"></song-list>
       </div>
     </div>
     <div class="msg" ref="msg">{{ msg }}</div>
@@ -38,6 +39,7 @@
 
 <script>
 import songList from '@/components/songList/song-list.vue'
+import { mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -156,6 +158,9 @@ export default {
       }
       return Top
     }
+  },
+  computed: {
+    ...mapState(['userInfo'])
   },
   watch: {
     '$route.query.id': {
