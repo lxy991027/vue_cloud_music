@@ -83,15 +83,15 @@ export default {
       option: [
         {
           name: '热门作品',
-          code: '/songList'
+          code: '/singer/songList'
         },
         {
           name: '所有专辑',
-          code: '/allCd'
+          code: '/singer/allCd'
         },
         {
           name: '相关MV',
-          code: '/songListMv'
+          code: '/singer/songListMv'
         }
       ],
       optionSetting: {
@@ -168,21 +168,21 @@ export default {
     // 点击时间监听
     optiomCilck() {
       console.log(this.optionChenge)
-      if (this.optionChenge === '/allCd') {
-        this.$router.push('/allCd?id=' + this.Uid)
-      } else if (this.optionChenge === '/songList') {
-        this.$router.push('/songList?id=' + this.Uid)
+      if (this.optionChenge === '/singer/allCd') {
+        this.$router.push('/singer/allCd?id=' + this.Uid)
+      } else if (this.optionChenge === '/singer/songList') {
+        this.$router.push('/singer/songList?id=' + this.Uid)
       } else {
-        this.$router.push('/songListMv?id=' + this.Uid)
+        this.$router.push('/singer/songListMv?id=' + this.Uid)
       }
     },
     chengePach() {
-      if (this.$route.path === '/allCd') {
-        this.$router.push('/allCd?id=' + this.Uid)
-      } else if (this.$route.path === '/songList') {
-        this.$router.push('/songList?id=' + this.Uid)
+      if (this.$route.path === '/singer/allCd') {
+        this.$router.push('/singer/allCd?id=' + this.Uid)
+      } else if (this.$route.path === '/singer/songList') {
+        this.$router.push('/singer/songList?id=' + this.Uid)
       } else {
-        this.$router.push('/songListMv?id=' + this.Uid)
+        this.$router.push('/singer/songListMv?id=' + this.Uid)
       }
     },
     async getArtistSub(item) {

@@ -27,11 +27,11 @@ const routes = [
     path: '/singer',
     name: 'singer',
     component: Singer,
-    redirect: '/songList',
+    redirect: '/singer/songList',
     children: [
-      { path: '/songList', component: songList },
-      { path: '/allCd', component: allCd },
-      { path: '/songListMv', component: songListMv }
+      { path: '/singer/songList', component: songList },
+      { path: '/singer/allCd', component: allCd },
+      { path: '/singer/songListMv', component: songListMv }
     ]
   },
   {
