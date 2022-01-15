@@ -3,7 +3,7 @@
     <Tag v-if="showMvBox" :list="mv_area" :settingList="mvListTagSetting" :tagValue.sync="mvListListTagValue" @cilckTag="mvListValue"></Tag>
     <div class="Tags" v-else></div>
     <div class="mvBoxList" :class="{ 'grid-template-columns5': count === 10, 'grid-template-columns4': count === 8 }">
-      <MvList v-for="(item, index) in mv_list" :key="index" :list="item" v-show="index < count"></MvList>
+      <MvList v-for="(item, index) in mv_list" :key="item.id ? item.id + index : index" :list="item" v-show="index < count"></MvList>
     </div>
   </div>
 </template>

@@ -2,7 +2,7 @@
   <div class="hotMusicList-continer">
     <Tag :list="HotMusicList" :settingList="HotMusicListTagSetting" :tagValue.sync="hotMusicListTagValue" @cilckTag="getHotMusicValue"></Tag>
     <div class="CD" ref="CD" :class="{ 'grid-template-columns6': count === 6, 'grid-template-columns5': count === 5 }">
-      <PlayCd v-for="(item, index) in playMusicList" :key="item.id + index" :playCdList="item" v-show="index < count"></PlayCd>
+      <PlayCd v-for="(item, index) in playMusicList" :key="item.id ? item.id + index : index" :playCdList="item" v-show="index < count"></PlayCd>
     </div>
   </div>
 </template>
