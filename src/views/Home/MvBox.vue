@@ -44,6 +44,7 @@ export default {
   methods: {
     // MV的TAG栏点击事件
     async mvListValue() {
+      this.mv_list = [{}, {}, {}, {}, {}, {}, {}, {}, {}, {}]
       if (this.mvListListTagValue !== '全部') {
         this.mv_params.area = this.mvListListTagValue
       } else {

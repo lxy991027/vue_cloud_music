@@ -60,6 +60,7 @@ export default {
   },
   methods: {
     async newCdListValue() {
+      this.NewCdList = []
       // 新碟推荐Tag栏点击事件
       this.NewCdParams.area = this.NewCdListListTagValue
       console.log(this.NewCdListListTagValue, '哈哈')

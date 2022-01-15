@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     async getHotMusicValue() {
+      this.playMusicList = [{}]
       console.log(this.hotMusicListTagValue)
       if (this.hotMusicListTagValue === '为您推荐') {
         this.playlist_params.cat = ''
