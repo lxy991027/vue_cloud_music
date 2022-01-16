@@ -93,6 +93,8 @@ const getAlbumSublist = ({ limit = 25, offset = 0 }) => api.get(`/album/sublist?
 const subPlayList = ({ t = 1, id = '' }) => api.get(`/playlist/subscribe?t=${t}&id=${id}`, {})
 // 添加歌曲到歌单
 const addPlayList = ({ op = 'add', pid = '', tracks = '' }) => api.get(`/playlist/tracks?op=${op}&pid=${pid}&tracks=${tracks}`, {})
+// 所有榜单内容摘要
+const topListDetail = () => api.get('/toplist/detail', {})
 export default {
   getBanner,
   getHotMusicList,
@@ -134,5 +136,6 @@ export default {
   albumSub,
   getAlbumSublist,
   subPlayList,
-  addPlayList
+  addPlayList,
+  topListDetail
 }

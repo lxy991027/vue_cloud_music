@@ -68,7 +68,7 @@ export default {
       // }
     },
     setSong(id) {
-      if (!this.click) return
+      if (!this.click) return this.$message.error('操作太频繁了，稍微慢一点吧！！')
       this.click = false
       console.log('歌单ID', id)
       console.log(this.Id)

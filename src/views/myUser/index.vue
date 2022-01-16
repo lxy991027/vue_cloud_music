@@ -14,6 +14,7 @@ export default {
   // 监听属性 类似于data概念
   mounted() {
     if (!this.isLogin) {
+      if (this.$route.path === '/myuser') return
       this.$router.push({ path: '/myuser' })
     }
   },
@@ -25,6 +26,8 @@ export default {
   },
   watch: {
     isLogin(newVal) {
+      // console.log(this.$route.path, '导航')
+      if (this.$route.path === '/myuser') return
       if (!newVal) {
         this.$router.push({ path: '/myuser' })
       }

@@ -119,7 +119,7 @@ export default {
       // this.$refs.collect.Id = item.Id
     },
     delSong(detailId, itemId, index) {
-      if (!this.click) return
+      if (!this.click) return this.$message.error('操作太频繁了，稍微慢一点吧！！')
       this.click = false
       // console.log(id)
       this.delPlayList(detailId, itemId, index)

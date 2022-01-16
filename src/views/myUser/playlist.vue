@@ -6,8 +6,11 @@
           <img :src="details.coverImgUrl" alt="" />
         </div>
         <div class="info">
-          <div class="cover-title">
-            {{ details.name }}
+          <div class="cover-title" v-if="JSON.stringify(details) !== '{}'">
+            <span v-if="details.creator.userId === this.userInfo.userId"> {{ details.name }}</span>
+            <router-link :to="{ path: '/detail', query: { id: details.id } }" class="name" v-else>
+              {{ details.name }}
+            </router-link>
           </div>
           <div class="cover-author" v-if="details.creator">
             <!-- <img :src="details.creator.avatarUrl" class="cover-avatar"></img> -->
@@ -249,6 +252,9 @@ export default {
       .cover-title {
         font-size: 24px;
         font-weight: bold;
+        .name {
+          color: #000;
+        }
       }
       .cover-tags {
         padding-bottom: 5px;
@@ -314,10 +320,13 @@ export default {
       }
       .cover-digital {
         color: #999;
-        width: 249px;
+        width: 100%;
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
         margin-top: 5px;
+        span {
+          margin-right: 20px;
+        }
       }
     }
   }

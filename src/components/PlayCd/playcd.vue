@@ -1,6 +1,6 @@
 <template>
   <div class="divcd">
-    <router-link :to="{ path: 'detail', query: { id: playCdList.id } }" class="faceImg" v-if="JSON.stringify(playCdList) !== '{}'">
+    <router-link :to="{ path: '/detail', query: { id: playCdList.id } }" class="faceImg" v-if="JSON.stringify(playCdList) !== '{}'">
       <div class="box">
         <img :src="playCdList.coverImgUrl + '?param=200y200'" alt="" />
         <span class="count"><i class="el-icon-headset"></i>{{ playCdList.playCount | setCount }}</span>

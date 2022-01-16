@@ -40,8 +40,8 @@ export default {
           path: '/home'
         },
         {
-          name: '我的音乐',
-          path: '/myuser'
+          name: '排行榜',
+          path: '/rank'
         },
         {
           name: '朋友',
@@ -56,8 +56,8 @@ export default {
           path: 'home'
         },
         {
-          name: '下载客户端',
-          path: 'home'
+          name: '我的音乐',
+          path: '/myuser'
         }
       ],
       input3: ''

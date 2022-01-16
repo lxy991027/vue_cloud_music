@@ -59,9 +59,9 @@ export default {
         return !item.subscribed
       })
       console.log(this.createdList, '????')
-      // if (this.$route.path !== '/myuser/playlist') {
-      //   this.$router.push({ path: '/myuser/playlist', query: { id: this.createdList[0].id } })
-      // }
+      if (this.$route.path !== '/myuser/playlist') {
+        this.$router.push({ path: '/myuser/playlist', query: { id: this.createdList[0].id } })
+      }
 
       this.collectList = res.playlist.filter((item) => {
         return item.subscribed

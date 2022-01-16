@@ -14,14 +14,20 @@ import Playlist from '@/views/myUser/playlist.vue'
 import Favorite from '@/views/myUser/favorite.vue'
 import cloudSongList from '@/views/myUser/cloudSongList.vue'
 import AlbumSunlist from '@/views/myUser/albumSunlist.vue'
+import Rank from '@/views/rank/rank.vue'
 Vue.use(VueRouter)
 
 const routes = [
   { path: '/', redirect: '/Home' },
   {
-    path: '/Home',
-    name: 'Home',
+    path: '/home',
+    name: 'home',
     component: Home
+  },
+  {
+    path: '/rank',
+    name: 'rank',
+    component: Rank
   },
   {
     path: '/singer',
