@@ -100,9 +100,9 @@ export default {
       slice[pages].map((item) => {
         arrs.push(item.id)
       })
-      console.log(arrs)
+      // console.log(arrs)
       const { data: res } = await this.$http.songDetail({ ids: arrs.join(','), timestamp: new Date().valueOf() + pages })
-      console.log(res, '数据')
+      // console.log(res, '数据')
       if (res.code !== 200) return this.$message.error('数据获取失败')
       // 格式化方法
       this.songList = [...this.songList, ...this.$format._format(res.songs)]
@@ -186,7 +186,7 @@ export default {
       if (this.getAbsTop(this.$refs.msg) - newVal < document.documentElement.clientHeight) {
         this.load = false
         this.cb()
-        console.log('触发了')
+        // console.log('触发了')
       }
     }
   },

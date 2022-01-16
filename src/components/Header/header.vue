@@ -44,15 +44,15 @@ export default {
           path: '/rank'
         },
         {
-          name: '朋友',
+          name: '歌单',
+          path: '/playlists'
+        },
+        {
+          name: 'MV',
           path: 'home'
         },
         {
-          name: '商城',
-          path: 'home'
-        },
-        {
-          name: '音乐人',
+          name: '歌手',
           path: 'home'
         },
         {

@@ -8,7 +8,7 @@
           <span :class="type === 'Other' ? 'active' : ''" @click="selectType('Other')">场景榜</span>
         </div>
         <ul class="buttons">
-          <li v-for="item in list" :key="item.id" :class="{ xuanzhong: id === item.id }" @click="changeId(item.id)">
+          <li v-for="item in list" :key="item.id" :class="{ xuanzhong: id + '' === item.id + '' }" @click="changeId(item.id)">
             <RankButton :item="item" :type="type"></RankButton>
           </li>
         </ul>
@@ -48,7 +48,7 @@ export default {
       console.log(this.list)
       this.id = this['list' + type][0].id
       // if (this.$route.path === `/rank?type=${this.type}&id=${this.id}`) return
-      this.$router.push({ path: '/rank', query: { type: this.type, id: this.id } })
+      this.$router.push({ name: 'rank', query: { type: this.type, id: this.id } })
     },
     async getTopListDetail() {
       const { data: res } = await this.$http.topListDetail()
@@ -75,11 +75,13 @@ export default {
       console.log(this.listOther, ' this.listOther')
       this.list = this.type ? this['list' + this.type] : this.listTop
       // this.id = this.id ? this.id : this.listTop[0].id
-      this.id = this.$route.query.id ? this.$route.query.id : this.listTop[0].id
+      const id = this.$route.query.id ? this.$route.query.id : this.listTop[0].id
+      // this.id
       // if (this.$route.path === `/rank?type=${this.type}&id=${this.id}`) return
-      if (this.id !== '') return
-      this.$router.push({ path: '/rank', query: { type: this.type, id: this.id } })
-      console.log(this.id)
+      console.log(this.id, '什么JBid', this.$route.query.id)
+      if (this.id) return
+      this.$router.push({ name: 'rank', query: { type: this.type, id: id } })
+      this.id = id
     },
     changeId(id) {
       this.id = id
@@ -117,6 +119,7 @@ export default {
       .buttons {
         li {
           margin-bottom: 5px;
+          border-radius: 8px;
         }
       }
     }
