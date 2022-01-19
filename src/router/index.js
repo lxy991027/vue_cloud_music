@@ -16,6 +16,8 @@ import cloudSongList from '@/views/myUser/cloudSongList.vue'
 import AlbumSunlist from '@/views/myUser/albumSunlist.vue'
 import Rank from '@/views/rank/rank.vue'
 import PlayLists from '@/views/playLists/playLists.vue'
+import Artist from '@/views/artist/artist.vue'
+import Mvlist from '@/views/mvlist/mvlist.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -65,6 +67,16 @@ const routes = [
     path: '/detail',
     name: 'detail',
     component: Detail
+  },
+  {
+    path: '/mvlist',
+    name: 'mvlist',
+    component: Mvlist
+  },
+  {
+    path: '/artist',
+    name: 'artist',
+    component: Artist
   },
   {
     path: '/myuser',

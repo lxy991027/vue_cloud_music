@@ -49,11 +49,11 @@ export default {
         },
         {
           name: 'MV',
-          path: 'home'
+          path: '/mvlist'
         },
         {
           name: '歌手',
-          path: 'home'
+          path: '/artist'
         },
         {
           name: '我的音乐',

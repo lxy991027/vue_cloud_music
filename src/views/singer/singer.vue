@@ -407,4 +407,27 @@ export default {
     width: 391px;
   }
 }
+/deep/.el-dialog__wrapper {
+  // background-color: pink;
+  overflow: auto;
+  overflow-y: overlay;
+  &::-webkit-scrollbar {
+    /*滚动条整体样式*/
+    width: 6px; /*高宽分别对应横竖滚动条的尺寸*/
+    height: 50px;
+  }
+  &::-webkit-scrollbar-thumb {
+    /*滚动条里面小方块*/
+    border-radius: 3px;
+    // box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+    background: #e60026;
+  }
+  &::-webkit-scrollbar-track {
+    display: block;
+    /*滚动条里面轨道*/
+    /* box-shadow   : inset 0 0 5px rgba(0, 0, 0, 0.2); */
+    /* border-radius: 10px; */
+    background: transparent;
+  }
+}
 </style>

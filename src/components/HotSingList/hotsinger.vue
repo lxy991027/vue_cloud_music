@@ -41,6 +41,10 @@ span {
   font-size: 14px;
 }
 .name {
+  width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   color: #333;
   margin-bottom: 6px;
 }
