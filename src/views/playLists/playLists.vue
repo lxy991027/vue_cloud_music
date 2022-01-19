@@ -16,8 +16,6 @@ export default {
   methods: {
     async getCatlist() {
       const { data: res } = await this.$http.catlist()
-
-      console.log(res, '0')
       if (res.code !== 200) this.$message.error('数据请求失败')
       this.sub = res.sub
       for (const k in res.categories) {
@@ -28,7 +26,7 @@ export default {
         })
         this.categories.push(params)
       }
-      console.log(this.categories, '1')
+      // console.log(this.categories, '1')
       // this.curType = this.$route.query.cat ? this.$route.query.cat : res.all.name
       // this.allList = res.all
       // this.getMoreTxt()
