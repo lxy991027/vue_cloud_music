@@ -9,7 +9,7 @@
     </router-link>
     <!-- v-if="details.tags" -->
     <div class="cover-tags" v-if="playCdList.tags">
-      <router-link :to="{ path: '/playlist', query: { cat: tag } }" class="tag" v-for="(tag, index) in playCdList.tags" :key="index">#{{ tag }}</router-link>
+      <router-link :to="{ path: '/playlists', query: { cat: tag } }" class="tag" v-for="(tag, index) in playCdList.tags" :key="index">#{{ tag }}</router-link>
     </div>
   </div>
 </template>

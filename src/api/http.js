@@ -9,6 +9,8 @@ const playlist = ({ order = 'hot', cat = '', limit = 50, offset = 0 }) => api.ge
 const topAlbum = ({ limit = 20, offset = 0, area = 'all', type = 'new', year = '', month = '' }) => api.get(`/top/album?limit=${limit}&offset=${offset}&area=${area}&type=${type}&year=${year}&month=${month}`)
 // 排行榜
 const toplist = () => api.get('/toplist', {})
+// 歌单列表
+const playList = ({ order = 'hot', cat = '', limit = 50, offset = 0 }) => api.get(`/top/playlist?limit=${limit}&order=${order}&cat=${cat}&offset=${offset}`, {})
 // 歌单详情
 const listDetail = ({ id = '', s = 8 }) => api.get(`/playlist/detail?id=${id}&s=${s}`, {})
 // 最新MV
@@ -151,5 +153,6 @@ export default {
   topListDetail,
   artistList,
   mv,
-  catlist
+  catlist,
+  playList
 }

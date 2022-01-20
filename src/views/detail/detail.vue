@@ -26,7 +26,7 @@
                 </router-link>
                 <div class="cover-date">{{ details.createTime | formats }}</div>
                 <div class="cover-tags" v-if="details.tags">
-                  <router-link :to="{ path: '/playlist', query: { cat: tag } }" class="tag" v-for="(tag, index) in details.tags" :key="index">#{{ tag }}</router-link>
+                  <router-link :to="{ path: '/playlists', query: { cat: tag } }" class="tag" v-for="(tag, index) in details.tags" :key="index">#{{ tag }}</router-link>
                 </div>
                 <div class="cover-digital">
                   <span class="cover-playCount"><i class="iconfont icon-playnum"></i> {{ details.playCount | setCount }}次</span>
