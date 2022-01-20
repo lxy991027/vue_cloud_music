@@ -64,7 +64,7 @@ const artistAlbum = ({ id = '', limit = 50, offset = 0 }) => api.get(`/artist/al
 // 收藏/取消收藏歌手
 const artistSub = ({ id = '', t = '1' }) => api.get(`/artist/sub?id=${id}&t=${t}`, {})
 // 歌单详情
-const playlistdetail = ({ id = '', s = 8 }) => api.get(`/playlist/detail?id=${id}&s=${s}`, {})
+const playlistdetail = ({ id = '', s = 8, timestamp = 0 }) => api.get(`/playlist/detail?id=${id}&s=${s}&timestamp=${timestamp}`, {})
 // 歌单收藏用户
 const playlistSCollect = ({ id = '', limit = 20, offset = 0 }) => api.get(`/playlist/subscribers?id=${id}&limit=${limit}&offset=${offset}`, {})
 // 相关歌单推荐

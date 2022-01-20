@@ -72,6 +72,7 @@ export default {
   methods: {
     // 登录及未登录下获取歌单中歌曲的列表
     async getDetail(params) {
+      params.timestamp = Date.now()
       this.isLoading = true
       const { data: res } = await this.$http.playlistdetail(params)
       console.log(res, '列表')

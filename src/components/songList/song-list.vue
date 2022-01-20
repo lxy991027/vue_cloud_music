@@ -53,12 +53,28 @@
           <div class="btn" v-else>
             <i class="el-icon-plus add" @click="onlyAddSong(item)"></i>
             <i class="iconfont icon-collect heart" @click="chengeShowCollet(item)" v-if="!myDetail"></i>
-            <i class="iconfont icon-del heart" @click="delSong(detailId, item.id, index)" v-else></i>
+            <!-- delSong(detailId, item.id, index) -->
+            <i class="iconfont icon-del heart" @click="DelDialog(detailId, item, index)" v-else></i>
           </div>
         </div>
       </div>
     </div>
     <Collect ref="collect" v-if="showCollet" :close.sync="showCollet"></Collect>
+    <div class="delDialog" v-if="showDelDialog">
+      <div class="box">
+        <div class="title">
+          <span>删除歌曲《{{ delName }}》</span>
+          <a href="javascript:;" class="el-icon-close" @click="close"></a>
+        </div>
+        <div class="info">
+          <p>是否从此歌单中删除《{{ delName }}》</p>
+          <div class="buttons">
+            <a href="javascript:;" class="no" @click="close">取消</a>
+            <a href="javascript:;" class="yes" @click="delSong(detailId, itemId, index)">确定</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -71,7 +87,13 @@ export default {
     return {
       Songs: [],
       showCollet: false,
-      click: true
+      click: true,
+      showDelDialog: false,
+      delName: '',
+      // 需要删除歌曲的ID
+      itemId: '',
+      // 需要删除的歌曲的索引
+      index: ''
     }
   },
   // created() {
@@ -119,10 +141,12 @@ export default {
       // this.$refs.collect.Id = item.Id
     },
     delSong(detailId, itemId, index) {
+      // console.log(detailId, itemId, index)
       if (!this.click) return this.$message.error('操作太频繁了，稍微慢一点吧！！')
       this.click = false
       // console.log(id)
       this.delPlayList(detailId, itemId, index)
+      this.showDelDialog = false
     },
     async delPlayList(detailId, itemId, index) {
       const { data: res } = await this.$http.addPlayList({ op: 'del', pid: detailId, tracks: itemId })
@@ -139,6 +163,16 @@ export default {
       this.$message.success('删除成功', res.message)
       this.list.splice(index, 1)
       // this.$emit('update:close', false)
+    },
+    DelDialog(detailId, item, index) {
+      this.showDelDialog = true
+      this.delName = item.name
+      this.itemId = item.id
+      this.index = index
+      console.log(detailId, item.id, index)
+    },
+    close() {
+      this.showDelDialog = false
     }
   },
   components: {
@@ -373,5 +407,83 @@ export default {
   font-size: 10px;
   color: #ccc;
   user-select: none;
+}
+.delDialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  .box {
+    width: 500px;
+    height: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    .title {
+      padding: 0 10px;
+      background-color: #2d2d2d;
+      width: 100%;
+      height: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      span {
+        color: #f5f5f5;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      padding: 0 10px;
+      width: 100%;
+      height: 265px;
+      // background-color: pink;
+      justify-content: space-between;
+      p {
+        margin-top: 35px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.7);
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 80px;
+        margin-bottom: 50px;
+        a {
+          // background-color: red;
+          height: 30px;
+          width: 100px;
+          border-radius: 15px;
+          text-align: center;
+          line-height: 30px;
+          color: rgba(0, 0, 0, 0.7);
+          font-size: 15px;
+          font-weight: 600;
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        }
+        .yes {
+          background-color: rgba(255, 0, 0, 0.5);
+        }
+        .no {
+          background-color: #dcdcdc;
+        }
+      }
+    }
+    .el-icon-close {
+      font-size: 20px;
+      color: #f5f5f5;
+    }
+  }
 }
 </style>
