@@ -41,7 +41,7 @@ export default {
   methods: {
     ...mapMutations(['showDialog', 'setUserInfo', 'setLogin']),
     async login() {
-      const { data: res } = await this.$http.logsss()
+      const { data: res } = await this.$http.logsss({ timestamp: Date.now() })
       if (res.code !== 200) return this.$message.error('获取登录信息失败')
       console.log(res, '登录信息')
       if (res.profile) {

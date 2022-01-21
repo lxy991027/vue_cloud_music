@@ -22,7 +22,7 @@
 
 <script>
 import RankButton from './rankButton.vue'
-import PlayList from '@/views/myUser/playlist.vue'
+import PlayList from './playlist2.vue'
 export default {
   data() {
     return {

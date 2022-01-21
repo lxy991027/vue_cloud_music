@@ -74,11 +74,11 @@ const playlistComment = ({ id = '', limit = 20, offset = 0, before = 0 }) => api
 // 获取歌手 mv
 const artistMv = ({ id = '', limit = 50, offset = 0 }) => api.get(`/artist/mv?id=${id}&limit=${limit}&offset=${offset}`, {})
 // 登录
-const login = ({ phone = '', pwd = '' }) => api.get(`/login/cellphone?phone=${phone}&password=${pwd}`, {})
+const login = ({ phone = '', pwd = '', timestamp = 0 }) => api.get(`/login/cellphone?phone=${phone}&password=${pwd}&timestamp=${timestamp}`, {})
 // 获取用户详情
 const getUserInfo = ({ uid = '' }) => api.get(`/user/detail?uid=${uid}`, {})
 // 登录状态
-const logsss = () => api.get('/user/account', {})
+const logsss = ({ timestamp = 0 }) => api.get(`/user/account?timestamp=${timestamp}`, {})
 // 退出登录
 const logout = () => api.get('/logout', {})
 // 获取用户歌单

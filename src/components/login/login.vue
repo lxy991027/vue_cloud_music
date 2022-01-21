@@ -43,6 +43,7 @@ export default {
       }
     },
     async login() {
+      this.loginForm.timestamp = Date.now()
       const { data: res } = await this.$http.login(this.loginForm)
       console.log(res, '登录')
       if (res.code !== 200) {
