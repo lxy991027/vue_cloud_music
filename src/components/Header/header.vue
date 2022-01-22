@@ -3,7 +3,7 @@
     <div class="header">
       <div>
         <h1 class="logo">
-          <a href="#">网易云音乐</a>
+          <router-link to="/home">网易云音乐</router-link>
         </h1>
         <ul class="tab">
           <li v-for="(item, index) in tabList" :key="index">
@@ -125,11 +125,16 @@ export default {
 }
 .logo {
   width: 176px;
-  height: 69px;
+  height: 55px;
   padding-right: 20px;
-  background-image: url('../../assets/topbar.png');
-  background-position: 0 0;
-  text-indent: -9999px;
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-image: url('../../assets/topbar.png');
+    background-position: 0 -7px;
+    text-indent: -9999px;
+  }
 }
 .tab {
   display: flex;
@@ -138,8 +143,8 @@ export default {
     padding: 0 19px;
     font-size: 14px;
     color: #ccc;
-    line-height: 70px;
-    height: 70px;
+    line-height: 55px;
+    height: 55px;
   }
 }
 .el-input {
@@ -193,8 +198,8 @@ export default {
   // padding-right: 22px;
   font-size: 12px;
   // background-color: pink;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
 
   a {
     color: #787878;
@@ -205,6 +210,7 @@ export default {
   .user {
     width: 100%;
     height: 100%;
+    // background: pink;
 
     border-radius: 50%;
     overflow: hidden;
@@ -212,6 +218,14 @@ export default {
       width: 100%;
       height: 100%;
     }
+  }
+}
+@supports (-webkit-backdrop-filter: blur(25px)) or (backdrop-filter: blur(25px)) {
+  .container-header {
+    // background-color: transparent;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px);
+    backdrop-filter: saturate(1.2) blur(24px);
+    background-color: rgba(36, 36, 36, 0.8);
   }
 }
 </style>

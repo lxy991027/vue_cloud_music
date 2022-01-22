@@ -237,6 +237,11 @@ export default {
   },
   components: {
     PlayCd
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.sizeChenge)
+    document.onscroll = null
+    console.log('销毁了')
   }
 }
 </script>

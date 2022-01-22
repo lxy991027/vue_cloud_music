@@ -4,10 +4,11 @@
       <Header></Header>
     </div>
     <main>
+      <div class="main"></div>
       <router-view></router-view>
     </main>
     <footer>
-      <span>本网站仅供学习参考，不做任何商业用途</span>
+      <span>本站仅供学习参考，不做任何商业用途</span>
     </footer>
     <Audio></Audio>
     <Login></Login>
@@ -55,12 +56,22 @@ export default {
 
 <style lang="less" scoped>
 .header {
-  height: 70px !important;
+  height: 55px !important;
   padding: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
 }
 main {
   padding: 0;
   min-height: calc(100vh - 80px - 40px);
+  .main {
+    width: 100%;
+    height: 55px;
+    background-color: #242424;
+  }
 }
 .main-box {
   position: relative;
@@ -71,12 +82,12 @@ footer {
   align-items: center;
   justify-content: center;
   // margin-top: 55px;
-  background-color: #333;
+  background-color: #e8e8e8;
   width: 100%;
-  height: 20vh;
+  height: 100px;
   z-index: 999;
   span {
-    font-size: 3vw;
+    font-size: 20px;
   }
 }
 </style>
