@@ -18,6 +18,7 @@ import Rank from '@/views/rank/rank.vue'
 import PlayLists from '@/views/playLists/playLists.vue'
 import Artist from '@/views/artist/artist.vue'
 import Mvlist from '@/views/mvlist/mvlist.vue'
+import Search from '@/views/search/search.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -89,6 +90,11 @@ const routes = [
       // AlbumSunlist
       { path: '/myuser/albumSunlist', name: 'myAlbumSunlist', component: AlbumSunlist }
     ]
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: Search
   },
   {
     path: '/about',

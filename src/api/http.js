@@ -108,6 +108,10 @@ const topListDetail = () => api.get('/toplist/detail', {})
 const artistList = ({ type = -1, area = -1, initial = '', limit = 50, offset = 0 }) => api.get(`/artist/list?type=${type}&area=${area}&initial=${initial}&limit=${limit}&offset=${offset}`, {})
 // 获取 mv
 const mv = ({ area = '', type = '', order = '', limit = 50, offset = 0 }) => api.get(`/mv/all?area=${area}&type=${type}&order=${order}&limit=${limit}&offset=${offset}`, {})
+// 热门搜索
+const serachHot = () => api.get('/search/hot', {})
+// 搜索
+const serachSuggest = ({ keywords = '' }) => api.get(`/search/suggest?keywords=${keywords}`, {})
 export default {
   getBanner,
   getHotMusicList,
@@ -154,5 +158,7 @@ export default {
   artistList,
   mv,
   catlist,
-  playList
+  playList,
+  serachHot,
+  serachSuggest
 }

@@ -1,5 +1,6 @@
 <template>
   <header class="container-header">
+    <div class="filter"></div>
     <div class="header">
       <div>
         <h1 class="logo">
@@ -13,10 +14,46 @@
       </div>
 
       <div class="right">
-        <el-input placeholder="音乐/视频/电台/用户" v-model="input3" class="input-with-select">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-        <el-button round class="btn" @click="logout">退出登录</el-button>
+        <div class="input" id="show">
+          <el-input placeholder="请输入歌名、歌词、歌手或专辑" v-model="input3" class="input-with-select" @focus="showRank" @blur="showRanks" @input="getSerachSuggest">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+          <div class="rank" v-if="Rank">
+            <template v-if="input3 === ''">
+              <h6>热门搜索</h6>
+              <ul>
+                <li v-for="(item, index) in serachHot" :key="index" @click="jumpSearch(item)">
+                  <a href="javascript:;">
+                    <i :class="{ top1: index === 0, top2: index === 1, top3: index === 2 }">{{ index + 1 }}.</i>
+                    {{ item.first }}
+                  </a>
+                </li>
+              </ul>
+            </template>
+            <template v-else>
+              <ul class="search">
+                <li v-for="(item, index) in suggestInfo.order" :key="index">
+                  <h6>{{ listType[item] }}</h6>
+                  <ul>
+                    <li v-for="(val, k) in suggestInfo[item]" :key="k">
+                      <a href="javascript:;" class="text" @click="jumpPage(val, item)">
+                        {{ val.name }}
+                        <template v-if="item === 'songs'">
+                          -<span v-for="(a, i) in val.artists" :key="i">{{ a.name + (i !== 0 ? ' / ' : '') }}</span>
+                        </template>
+                        <template v-else-if="item === 'albums'">
+                          -<span>{{ val.artist.name }}</span>
+                        </template>
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </template>
+          </div>
+        </div>
+
+        <!-- <el-button round class="btn" @click="logout">退出登录</el-button> -->
         <div class="user-box">
           <a href="Javascript:;" @click="dialog" v-if="!isLogin">登录</a>
           <div class="user" v-else>
@@ -32,6 +69,25 @@
 import { mapMutations, mapState } from 'vuex'
 // mapMutations
 export default {
+  created() {
+    // this.getSearchHot()
+    // this.getSerachSuggest()
+  },
+  mounted() {
+    document.addEventListener('click', (e) => {
+      e = e || window.event // 浏览器兼容性
+      var elem = e.target || e.srcElement
+      while (elem) {
+        // 循环判断至跟节点，防止点击的是div子元素
+        if (elem.id && elem.id === 'show') {
+          // console.log(elem)
+          return
+        }
+        elem = elem.parentNode
+      }
+      this.Rank = false
+    })
+  },
   data() {
     return {
       tabList: [
@@ -60,7 +116,16 @@ export default {
           path: '/myuser'
         }
       ],
-      input3: ''
+      input3: '',
+      serachHot: [],
+      Rank: false,
+      listType: {
+        songs: '单曲',
+        artists: '歌手',
+        albums: '专辑',
+        playlists: '歌单'
+      },
+      suggestInfo: {}
     }
   },
   methods: {
@@ -93,6 +158,84 @@ export default {
       // if (this.$route.path.indexOf('/my') >= 0) {
       //     this.$router.push({ path: '/' })
       // }
+    },
+    // 热门搜索
+    async getSearchHot() {
+      const { data: res } = await this.$http.serachHot()
+
+      if (res.code !== 200) {
+        return this.$message.error('数据请求失败')
+      }
+
+      this.serachHot = res.result.hots
+      console.log(this.serachHot, '热门搜索')
+    },
+    showRank() {
+      this.Rank = true
+      // setTimeout(() => {
+      //   document.onclick = () => {
+      //     this.Rank = false
+      //     document.onclick = null
+      //   }
+      // }, 100)
+      // if (this.Rank) {
+      //   this.Rank = false
+      // } else {
+      //   this.Rank = true
+      // }
+      if (this.input3 !== '') {
+        return
+      }
+      if (this.serachHot.length === 0) {
+        console.log('123')
+        this.getSearchHot()
+      }
+    },
+    showRanks() {
+      // setTimeout(() => {
+      // this.Rank = false
+      // }, 90)
+    },
+    async getSerachSuggest() {
+      if (this.input3 === '') return
+      const { data: res } = await this.$http.serachSuggest({ keywords: this.input3 })
+      console.log(res)
+      if (res.code !== 200) {
+        return this.$message.error('数据请求失败')
+      }
+
+      this.suggestInfo = res.result
+    },
+    // 搜索建议列表，点击后跳转到相对应的落地页
+    jumpPage(item, type) {
+      console.log('调用了')
+      this.input3 = item.name
+      switch (type) {
+        case 'songs':
+          this.$router.push({ path: '/song', query: { id: item.id } })
+          break
+        case 'artists':
+          this.$router.push({ path: '/singer', query: { id: item.id } })
+          break
+        case 'albums':
+          this.$router.push({ path: '/album', query: { id: item.id } })
+          break
+        case 'playlists':
+          this.$router.push({ path: '/playlist/detail', query: { id: item.id } })
+          break
+      }
+      // this.isShowSearch = false
+      this.Rank = false
+    },
+    // 默认热门搜索列表，点击后台跳转到搜索结果页面
+    jumpSearch(item) {
+      // this.isShowSearch = false
+      this.input3 = item.first
+      if (item.first === this.$route.query.key) {
+        return
+      }
+      this.$router.push({ path: '/search', query: { key: item.first } })
+      this.Rank = false
     }
   },
   computed: {
@@ -103,23 +246,84 @@ export default {
 
 <style lang="less" scoped>
 .container-header {
+  position: relative;
   width: 100%;
   height: 100%;
-  background-color: #242424;
-
+  // background-color: #242424;
+  .filter {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #242424;
+  }
   .header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     justify-content: space-between;
 
     margin: 0 auto;
     width: 80%;
     min-width: 1100px;
+    z-index: 10;
     div {
       display: flex;
     }
     .right {
       // background-color: red;
       align-items: center;
+      .input {
+        position: relative;
+        .rank {
+          .text {
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          .search {
+            margin-top: 0;
+          }
+          // display: block;
+          color: #606266;
+          // -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+          // backdrop-filter: saturate(1.2) blur(24px) !important;
+          h6 {
+            font-size: 18px;
+          }
+          width: 100%;
+          background-color: #fff;
+          position: absolute;
+          flex-direction: column;
+          top: 37px;
+          left: 0;
+          padding: 10px;
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+          // box-shadow: ;
+          border-radius: 10px;
+          border: 1px solid #ebeef5;
+          ul {
+            margin-top: 10px;
+            li {
+              color: #606266;
+              padding: 4px 0;
+              font-size: 14px;
+              a {
+                color: #606266;
+                display: block;
+                width: 100%;
+              }
+              i {
+                font-style: normal;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -148,9 +352,9 @@ export default {
   }
 }
 .el-input {
-  margin-left: 85px;
+  // margin-left: 85px;
   // margin-top: 19px;
-  width: 158px;
+  width: 208px;
   height: 32px;
   position: relative;
   border-radius: 16px;
@@ -221,11 +425,29 @@ export default {
   }
 }
 @supports (-webkit-backdrop-filter: blur(25px)) or (backdrop-filter: blur(25px)) {
-  .container-header {
-    // background-color: transparent;
-    -webkit-backdrop-filter: saturate(1.2) blur(24px);
-    backdrop-filter: saturate(1.2) blur(24px);
-    background-color: rgba(36, 36, 36, 0.8);
+  .filter {
+    background-color: transparent !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+    backdrop-filter: saturate(1.2) blur(24px) !important;
+    background-color: rgba(36, 36, 36, 0.7) !important;
   }
+  .rank {
+    background-color: rgba(255, 255, 255, 0.3) !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+    backdrop-filter: saturate(1.2) blur(24px) !important;
+    border: 0 !important;
+  }
+}
+.top1 {
+  font-weight: bold;
+  color: #ff0000;
+}
+.top2 {
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.6);
+}
+.top3 {
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.4);
 }
 </style>
