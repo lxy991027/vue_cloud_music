@@ -2,7 +2,7 @@
   <div>
     <Tag :list="NewCdListTag" :settingList="NewCdListTagSetting" :tagValue.sync="NewCdListListTagValue" @cilckTag="newCdListValue"></Tag>
     <div class="newCd" :class="{ 'grid-template-columns4 ': count === 16, 'grid-template-columns3 ': count === 9 }">
-      <NewCd v-for="(item, index) in NewCdList" :key="item.id + index" :NewCdList="item" v-show="index < count"></NewCd>
+      <NewCd v-for="(item, index) in NewCdList" :key="item.id + '' + index" :NewCdList="item" v-show="index < count"></NewCd>
     </div>
   </div>
 </template>

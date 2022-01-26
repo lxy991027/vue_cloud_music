@@ -112,6 +112,8 @@ const mv = ({ area = '', type = '', order = '', limit = 50, offset = 0 }) => api
 const serachHot = () => api.get('/search/hot', {})
 // 搜索
 const serachSuggest = ({ keywords = '' }) => api.get(`/search/suggest?keywords=${keywords}`, {})
+// 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
+const cloudsearch = ({ keywords = '', limit = 30, offset = 0, type = '1' }) => api.get(`/cloudsearch?keywords=${keywords}&limit=${limit}&offset=${offset}&type=${type}`, {})
 export default {
   getBanner,
   getHotMusicList,
@@ -160,5 +162,6 @@ export default {
   catlist,
   playList,
   serachHot,
-  serachSuggest
+  serachSuggest,
+  cloudsearch
 }

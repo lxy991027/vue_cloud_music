@@ -234,7 +234,7 @@ export default {
       if (item.first === this.$route.query.key) {
         return
       }
-      this.$router.push({ path: '/search', query: { key: item.first } })
+      this.$router.push({ path: '/search', query: { key: item.first, type: '1' } })
       this.Rank = false
     }
   },
@@ -432,7 +432,7 @@ export default {
     background-color: rgba(36, 36, 36, 0.7) !important;
   }
   .rank {
-    background-color: rgba(255, 255, 255, 0.3) !important;
+    background-color: rgba(255, 255, 255, 0.6) !important;
     -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
     backdrop-filter: saturate(1.2) blur(24px) !important;
     border: 0 !important;

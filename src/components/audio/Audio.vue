@@ -1,5 +1,6 @@
 <template>
   <div class="audio-continer" @mouseover="showAudio" @mouseout="noneAudio" ref="audioContiner">
+    <div class="filter"></div>
     <div class="hover">
       <span class="lock">
         <a href="javascript:;" class="el-icon-lock" v-if="this.audiolock" @click="audiolock = false" :style="{ color: '#e60026' }"></a>
@@ -837,8 +838,8 @@ export default {
 
 <style lang="less" scoped>
 .audio-continer {
-  box-shadow: 0 -5px 5px rgba(0, 0, 0, 0.5);
-  background-color: #ffffff;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.5);
+  // background-color: #ffffff;
   position: fixed;
   left: 0;
   right: 0;
@@ -959,7 +960,7 @@ export default {
   right: 15%;
   width: 70px;
   height: 30px;
-  background-color: #ffffff;
+  // background-color: #ffffff;
   border-radius: 25px 25px 0 0;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   a {
@@ -1241,5 +1242,63 @@ export default {
 }
 .shadow {
   box-shadow: 0 0 20px #ff641e;
+}
+.filter {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ffffff;
+}
+@supports (-webkit-backdrop-filter: blur(25px)) or (backdrop-filter: blur(25px)) {
+  // .filter {
+  //   background-color: transparent !important;
+  //   -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+  //   backdrop-filter: saturate(1.2) blur(24px) !important;
+  //   background-color: rgba(36, 36, 36, 0.7) !important;
+  // }
+  .filter {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+    backdrop-filter: saturate(1.2) blur(24px) !important;
+    // border: 0 !important;
+  }
+  .lock {
+    background-color: rgba(255, 255, 255, 0.6) !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+    backdrop-filter: saturate(1.2) blur(24px) !important;
+  }
+  .lyric {
+    background-color: rgba(240, 240, 240, 0.6) !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+    backdrop-filter: saturate(1.2) blur(24px) !important;
+  }
+  .PLAY-LIST {
+    background-color: rgba(240, 240, 240, 0.6) !important;
+    -webkit-backdrop-filter: saturate(1.2) blur(24px) !important;
+    backdrop-filter: saturate(1.2) blur(24px) !important;
+  }
+  /deep/.background {
+    background-color: transparent;
+  }
+  /deep/.rows {
+    &:hover {
+      background-color: rgba(240, 240, 240, 0.4);
+    }
+  }
+  /deep/.list-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  /deep/.nowPlay {
+    background-color: rgba(240, 240, 240, 0.5) !important ;
+  }
+}
+
+/deep/.columnAlbum {
+  display: none;
+}
+/deep/.columnSong {
+  width: 36%;
 }
 </style>

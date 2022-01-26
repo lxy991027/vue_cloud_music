@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="hotSingerBox">
-      <hotsingerlist v-for="(item, index) in artists_list" :key="item.id + index" :list="item" v-show="index < count"></hotsingerlist>
+      <hotsingerlist v-for="(item, index) in artists_list" :key="item.id + '' + index" :list="item" v-show="index < count"></hotsingerlist>
     </div>
   </div>
 </template>
