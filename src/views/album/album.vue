@@ -334,6 +334,7 @@ export default {
     }
     .left {
       width: 100%;
+      min-width: 0;
       .songTable {
         margin-top: 15px;
       }

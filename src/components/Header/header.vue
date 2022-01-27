@@ -14,11 +14,11 @@
       </div>
 
       <div class="right">
-        <div class="input" id="show">
-          <el-input placeholder="请输入歌名、歌词、歌手或专辑" v-model="input3" class="input-with-select" @focus="showRank" @blur="showRanks" @input="getSerachSuggest">
-            <el-button slot="append" icon="el-icon-search"></el-button>
+        <div class="input" id="show" @keyup.enter="up">
+          <el-input placeholder="请输入歌名、歌词、歌手或专辑" clearable ref="input" v-model="input3" class="input-with-select" @focus="showRank" @blur="showRanks" @input="getSerachSuggest">
+            <el-button slot="append" icon="el-icon-search" @click="up"></el-button>
           </el-input>
-          <div class="rank" v-if="Rank">
+          <div class="rank" v-if="(Rank && input3 === '') || suggestInfo.order">
             <template v-if="input3 === ''">
               <h6>热门搜索</h6>
               <ul>
@@ -129,6 +129,9 @@ export default {
     }
   },
   methods: {
+    downs() {
+      console.log('123')
+    },
     ...mapMutations(['showDialog', 'setUserInfo', 'setLogin']),
     dialog() {
       this.showDialog(true)
@@ -221,7 +224,7 @@ export default {
           this.$router.push({ path: '/album', query: { id: item.id } })
           break
         case 'playlists':
-          this.$router.push({ path: '/playlist/detail', query: { id: item.id } })
+          this.$router.push({ path: '/detail', query: { id: item.id } })
           break
       }
       // this.isShowSearch = false
@@ -236,6 +239,11 @@ export default {
       }
       this.$router.push({ path: '/search', query: { key: item.first, type: '1' } })
       this.Rank = false
+    },
+    up() {
+      this.Rank = false
+      this.$refs.input.blur()
+      this.$router.push({ path: '/search', query: { key: this.input3, type: '1' } })
     }
   },
   computed: {

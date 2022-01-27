@@ -66,7 +66,7 @@ export default {
 }
 main {
   padding: 0;
-  min-height: calc(100vh - 80px - 40px);
+  min-height: calc(100vh - 100px);
 
   .main {
     width: 100%;

@@ -54,7 +54,8 @@ export default {
       sliceArr: [],
       msg: '下拉加载',
       load: false,
-      top: 0
+      top: 0,
+      g: true
     }
   },
   mounted() {
@@ -88,14 +89,17 @@ export default {
     // 登录后根据ids获取所有歌曲列表
     getAllSongs(ids) {
       const num = 100
-
+      console.log(ids, '这是ID')
+      const sliceArr = []
       // 数组过长 每100份一组
       for (let index = 0; index < ids.length; index += num) {
-        this.sliceArr.push(ids.slice(index, index + num))
+        sliceArr.push(ids.slice(index, index + num))
       }
-      this.getList({ slice: this.sliceArr, page: this.page })
+      this.sliceArr = sliceArr
+      this.getList({ slice: sliceArr, page: this.page })
     },
     async getList({ slice, page, cb }) {
+      console.log(slice)
       const pages = page - 1
       const arrs = []
       slice[pages].map((item) => {
@@ -103,27 +107,14 @@ export default {
       })
       // console.log(arrs)
       const { data: res } = await this.$http.songDetail({ ids: arrs.join(','), timestamp: new Date().valueOf() + pages })
-      // console.log(res, '数据')
+      console.log(res, '数据')
       if (res.code !== 200) return this.$message.error('数据获取失败')
       // 格式化方法
-      this.songList = [...this.songList, ...this.$format._format(res.songs)]
+      console.log(pages, '决定')
+      this.songList = pages !== 0 ? [...this.songList, ...this.$format._format(res.songs)] : this.$format._format(res.songs)
+      // this.songList = [...this.songList, ...this.$format._format(res.songs)]
       this.load = true
       if (cb) cb()
-    },
-    _formatSongs(list) {
-      const ret = []
-      list.songs.map((item, index) => {
-        if (item.id) {
-          // 是否有版权播放
-          console.log(item.license)
-          if ((item.license = !list.privileges[index].cp) && !item.fee) {
-            item.st = -1
-          }
-          // item.license = !list.privileges[index].cp
-          ret.push(item)
-        }
-      })
-      return ret
     },
     cb() {
       // this.page++
@@ -172,6 +163,7 @@ export default {
         this.details = {}
         this.songList = []
         this.sliceArr = []
+        // this.g = false
         this.page = 1
         this.id = this.$route.query.id
         // this.chengePach()

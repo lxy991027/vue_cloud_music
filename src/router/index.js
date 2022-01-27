@@ -22,7 +22,7 @@ import Search from '@/views/search/search.vue'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', redirect: '/Home' },
+  { path: '/', redirect: '/home' },
   {
     path: '/home',
     name: 'home',
