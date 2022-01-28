@@ -61,9 +61,12 @@ export default {
     // 歌单详情
     this.getDetail({ id: this.id, s: 8 })
 
-    window.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-    }
+    // window.onscroll = () => {
+    //   this.top = document.body.scrollTop + document.documentElement.scrollTop
+    // }
+    this.$bus.$on('scrollTop', (v) => {
+      this.top = v
+    })
   },
   components: {
     songList
@@ -192,7 +195,8 @@ export default {
     }
   },
   beforeDestroy() {
-    window.onscroll = null
+    // window.onscroll = null
+    this.$bus.$off('scrollTop')
     console.log('销毁了')
   }
 }

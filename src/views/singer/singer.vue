@@ -116,7 +116,7 @@ export default {
   },
   created() {
     this.init()
-    console.log()
+    // console.log()
     // setInterval(() => {
     //   console.log(this.Uid)
     // }, 1000)

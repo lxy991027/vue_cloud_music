@@ -100,9 +100,10 @@ export default {
     // this.getMvComment()
   },
   mounted() {
-    document.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-    }
+    this.$bus.$on('scrollTop', (v) => {
+      console.log('触发了')
+      this.top = v
+    })
   },
   methods: {
     ...mapMutations(['showDialog']),
@@ -261,6 +262,9 @@ export default {
         this.cb()
       }
     }
+  },
+  beforeDestroy() {
+    this.$bus.$off('scrollTop')
   }
 }
 </script>

@@ -29,72 +29,74 @@
     <!-- 正在播放： {{ nowSong.album.picUrl }} -->
 
     <div class="box">
-      <div class="left">
-        <!-- 因为要做旋转动画古把两个v-for分开了 -->
-        <div class="img" ref="img" :class="{ shadow: isPlayed }">
-          <div v-if="nowSong.length === 0" :style="{ backgroundColor: '#f0f0f0', width: '100%', height: '100%' }"></div>
-          <!-- 数据驱动页面刷新 -->
-          <div v-for="item in nowSong" :key="item.id">
-            <router-link :to="{ path: '/song', query: { id: item.id } }">
-              <img :src="item.album.picUrl + '?param=60y60'" alt="" />
-            </router-link>
+      <div class="min-box" :style="{ left: `-${left}px` }">
+        <div class="left">
+          <!-- 因为要做旋转动画古把两个v-for分开了 -->
+          <div class="img" ref="img" :class="{ shadow: isPlayed }">
+            <div v-if="nowSong.length === 0" :style="{ backgroundColor: '#f0f0f0', width: '100%', height: '100%' }"></div>
+            <!-- 数据驱动页面刷新 -->
+            <div v-for="item in nowSong" :key="item.id">
+              <router-link :to="{ path: '/song', query: { id: item.id } }">
+                <img :src="item.album.picUrl + '?param=60y60'" alt="" />
+              </router-link>
+            </div>
+          </div>
+          <div v-if="nowSong.length === 0" class="title">
+            <h6>……</h6>
+            <span>……</span>
+          </div>
+          <div v-for="item2 in nowSong" :key="item2.id" class="title">
+            <h6>
+              <router-link :to="{ path: '/song', query: { id: item2.id } }">{{ item2.name }}</router-link>
+            </h6>
+            <span>
+              <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in item2.singer" :key="author.name">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
+            </span>
           </div>
         </div>
-        <div v-if="nowSong.length === 0" class="title">
-          <h6>……</h6>
-          <span>……</span>
-        </div>
-        <div v-for="item2 in nowSong" :key="item2.id" class="title">
-          <h6>
-            <router-link :to="{ path: '/song', query: { id: item2.id } }">{{ item2.name }}</router-link>
-          </h6>
+        <div class="middleTime">
+          <!-- <button @click="anc"></button> -->
           <span>
-            <router-link :to="{ path: '/singer', query: { id: author.id } }" class="song_name" v-for="(author, k) in item2.singer" :key="author.name">{{ k !== 0 ? ' / ' + author.name : author.name }}</router-link>
+            <em>{{ songTime | timechenge }}</em>
+            /
+            <em>{{ nowSongTime | timechenge }}</em>
           </span>
         </div>
-      </div>
-      <div class="middleTime">
-        <!-- <button @click="anc"></button> -->
-        <span>
-          <em>{{ songTime | timechenge }}</em>
-          /
-          <em>{{ nowSongTime | timechenge }}</em>
-        </span>
-      </div>
-      <div class="controls">
-        <a href="javascript:;" @click="callback" class="iconfont icon-audio-prev chenge"></a>
-        <a href="javascript:;" @click="stop" v-if="isPlayed" class="iconfont icon-audio-pause middle"></a>
-        <a href="javascript:;" @click="bofang" v-else class="iconfont icon-audio-play middle"></a>
-        <a href="javascript:;" @click="next" class="iconfont icon-audio-next chenge"></a>
-        <!-- <button @click="del"></button>
+        <div class="controls">
+          <a href="javascript:;" @click="callback" class="iconfont icon-audio-prev chenge"></a>
+          <a href="javascript:;" @click="stop" v-if="isPlayed" class="iconfont icon-audio-pause middle"></a>
+          <a href="javascript:;" @click="bofang" v-else class="iconfont icon-audio-play middle"></a>
+          <a href="javascript:;" @click="next" class="iconfont icon-audio-next chenge"></a>
+          <!-- <button @click="del"></button>
         <button @click="an">10秒</button>
         <span>{{ this.playId }}</span> -->
-        <!-- {{ playStatus }} -->
-        <!-- {{ nowSongTime }} -->
-      </div>
-      <div class="volume">
-        <a href="javascript:;" class="iconfont icon-volume-active volumeIcon" v-if="volumepercent === 0" @click="mute"></a>
-        <a href="javascript:;" class="iconfont icon-volume volumeIcon" v-else @click="loudspeake"></a>
+          <!-- {{ playStatus }} -->
+          <!-- {{ nowSongTime }} -->
+        </div>
+        <div class="volume">
+          <a href="javascript:;" class="iconfont icon-volume-active volumeIcon" v-if="volumepercent === 0" @click="mute"></a>
+          <a href="javascript:;" class="iconfont icon-volume volumeIcon" v-else @click="loudspeake"></a>
 
-        <div class="Progress" ref="volumeProgress">
-          <div class="minProgress" ref="volumeMinProgress">
-            <div class="btn" ref="volumeBtn" @mousedown.stop="volumeDown">
-              <div class="time" ref="volumeTime">
-                <span>{{ parseInt(volumepercent) }}</span>
+          <div class="Progress" ref="volumeProgress">
+            <div class="minProgress" ref="volumeMinProgress">
+              <div class="btn" ref="volumeBtn" @mousedown.stop="volumeDown">
+                <div class="time" ref="volumeTime">
+                  <span>{{ parseInt(volumepercent) }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="right">
-        <a href="javascript:;" class="iconfont icon-single-cycle" v-if="playStatus === 'loop'" @click="playStatus = 'random'"></a>
-        <a href="javascript:;" class="iconfont icon-shuffle" v-else-if="playStatus === 'random'" @click="playStatus = ''"></a>
-        <a href="javascript:;" class="iconfont icon-loop" v-else @click="playStatus = 'loop'"></a>
+        <div class="right">
+          <a href="javascript:;" class="iconfont icon-single-cycle" v-if="playStatus === 'loop'" @click="playStatus = 'random'"></a>
+          <a href="javascript:;" class="iconfont icon-shuffle" v-else-if="playStatus === 'random'" @click="playStatus = ''"></a>
+          <a href="javascript:;" class="iconfont icon-loop" v-else @click="playStatus = 'loop'"></a>
 
-        <a href="javascript:;" @click="showlyric">词</a>
-        <a href="javascript:;" class="iconfont icon-playlist btnPlayList" @click="showPlayList">
-          <span v-if="this.playList.length !== 0">{{ this.playList.length }}</span>
-        </a>
+          <a href="javascript:;" @click="showlyric">词</a>
+          <a href="javascript:;" class="iconfont icon-playlist btnPlayList" @click="showPlayList">
+            <span v-if="this.playList.length !== 0">{{ this.playList.length }}</span>
+          </a>
+        </div>
       </div>
     </div>
     <!-- <img :src="picUrl" alt="" /> -->
@@ -177,11 +179,14 @@ export default {
       Lyric: '',
       showLyric: false,
       // 显示和隐藏歌词动画
-      LyricTop: 80
+      LyricTop: 80,
+      left: 0
     }
   },
-  created() {},
   mounted() {
+    this.$bus.$on('scrollleft', (v) => {
+      this.left = v
+    })
     // console.log(`${this.$refs.music.volume * 100}%`)
     // this.$refs.volumeMinProgress.style.width = `${this.$refs.music.volume * 100}%`
     this.volumepercent = this.$refs.music.volume * 100
@@ -832,6 +837,11 @@ export default {
   components: {
     songList,
     lyric
+  },
+  beforeDestroy() {
+    // document.onscroll = null
+    this.$bus.$off('scrollleft')
+    console.log('销毁了')
   }
 }
 </script>
@@ -985,6 +995,13 @@ export default {
   margin: 0 auto;
   margin-top: 2.5px;
   min-width: 1100px;
+  .min-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
   .left {
     flex-shrink: 0;
     display: flex;

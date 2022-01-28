@@ -100,9 +100,13 @@ export default {
     window.addEventListener('resize', this.sizeChenge)
     // this.getHotMusicValue()
     this.show(this.top)
-    document.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-    }
+    // document.onscroll = () => {
+    //   this.top = document.body.scrollTop + document.documentElement.scrollTop
+    //   console.log(document.body.scrollLeft + document.documentElement.scrollLeft)
+    // }
+    this.$bus.$on('scrollTop', (v) => {
+      this.top = v
+    })
   },
   methods: {
     // 窗口变动事件
@@ -236,7 +240,8 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.sizeChenge)
-    document.onscroll = null
+    // document.onscroll = null
+    this.$bus.$off('scrollTop')
     console.log('销毁了')
   }
 }

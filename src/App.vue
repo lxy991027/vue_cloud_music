@@ -26,8 +26,20 @@ export default {
     Audio,
     Login
   },
+
   created() {
     this.login()
+  },
+  mounted() {
+    document.addEventListener('scroll', () => {
+      const top = document.body.scrollTop + document.documentElement.scrollTop
+      // console.log('app')
+      this.$bus.$emit('scrollTop', top)
+      const left = document.body.scrollLeft + document.documentElement.scrollLeft
+      this.$bus.$emit('scrollleft', left)
+      // this.left = -left
+      // console.log()
+    })
   },
   // mounted() {
   //   window.addEventListener('unload', function(event) {
@@ -61,7 +73,8 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
+  width: 100%;
+  // right: 0;
   z-index: 1000;
 }
 main {

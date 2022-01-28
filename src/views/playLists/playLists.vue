@@ -83,9 +83,12 @@ export default {
   mounted() {
     this.sizeChenge()
     window.addEventListener('resize', this.sizeChenge)
-    window.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-    }
+    // window.onscroll = () => {
+    //   this.top = document.body.scrollTop + document.documentElement.scrollTop
+    // }
+    this.$bus.$on('scrollTop', (v) => {
+      this.top = v
+    })
   },
   methods: {
     // 窗口变动事件
@@ -240,7 +243,8 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.sizeChenge)
-    document.onscroll = null
+    // document.onscroll = null
+    this.$bus.$off('scrollTop')
     console.log('销毁了')
   }
 }

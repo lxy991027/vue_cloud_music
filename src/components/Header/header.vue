@@ -2,62 +2,70 @@
   <header class="container-header">
     <div class="filter"></div>
     <div class="header">
-      <div>
-        <h1 class="logo">
-          <router-link to="/home">网易云音乐</router-link>
-        </h1>
-        <ul class="tab">
-          <li v-for="(item, index) in tabList" :key="index">
-            <router-link :to="item.path">{{ item.name }}</router-link>
-          </li>
-        </ul>
-      </div>
-
-      <div class="right">
-        <div class="input" id="show" @keyup.enter="up">
-          <el-input placeholder="请输入歌名、歌词、歌手或专辑" clearable ref="input" v-model="input3" class="input-with-select" @focus="showRank" @blur="showRanks" @input="getSerachSuggest">
-            <el-button slot="append" icon="el-icon-search" @click="up"></el-button>
-          </el-input>
-          <div class="rank" v-if="(Rank && input3 === '') || suggestInfo.order">
-            <template v-if="input3 === ''">
-              <h6>热门搜索</h6>
-              <ul>
-                <li v-for="(item, index) in serachHot" :key="index" @click="jumpSearch(item)">
-                  <a href="javascript:;">
-                    <i :class="{ top1: index === 0, top2: index === 1, top3: index === 2 }">{{ index + 1 }}.</i>
-                    {{ item.first }}
-                  </a>
-                </li>
-              </ul>
-            </template>
-            <template v-else>
-              <ul class="search">
-                <li v-for="(item, index) in suggestInfo.order" :key="index">
-                  <h6>{{ listType[item] }}</h6>
-                  <ul>
-                    <li v-for="(val, k) in suggestInfo[item]" :key="k">
-                      <a href="javascript:;" class="text" @click="jumpPage(val, item)">
-                        {{ val.name }}
-                        <template v-if="item === 'songs'">
-                          -<span v-for="(a, i) in val.artists" :key="i">{{ a.name + (i !== 0 ? ' / ' : '') }}</span>
-                        </template>
-                        <template v-else-if="item === 'albums'">
-                          -<span>{{ val.artist.name }}</span>
-                        </template>
-                      </a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </template>
-          </div>
+      <div class="min-header" :style="{ left: `-${left}px` }">
+        <div>
+          <h1 class="logo">
+            <router-link to="/home">网易云音乐</router-link>
+          </h1>
+          <ul class="tab">
+            <li v-for="(item, index) in tabList" :key="index">
+              <router-link :to="item.path">{{ item.name }}</router-link>
+            </li>
+          </ul>
         </div>
 
-        <!-- <el-button round class="btn" @click="logout">退出登录</el-button> -->
-        <div class="user-box">
-          <a href="Javascript:;" @click="dialog" v-if="!isLogin">登录</a>
-          <div class="user" v-else>
-            <img :src="userInfo.avatarUrl" alt="" />
+        <div class="right">
+          <div class="input" id="show" @keyup.enter="up">
+            <el-input placeholder="请输入歌名、歌词、歌手或专辑" clearable ref="input" v-model="input3" class="input-with-select" @focus="showRank" @blur="showRanks" @input="getSerachSuggest">
+              <el-button slot="append" icon="el-icon-search" @click="up"></el-button>
+            </el-input>
+            <div class="rank" v-if="(Rank && input3 === '') || suggestInfo.order">
+              <template v-if="input3 === ''">
+                <h6>热门搜索</h6>
+                <ul>
+                  <li v-for="(item, index) in serachHot" :key="index" @click="jumpSearch(item)">
+                    <a href="javascript:;">
+                      <i :class="{ top1: index === 0, top2: index === 1, top3: index === 2 }">{{ index + 1 }}.</i>
+                      {{ item.first }}
+                    </a>
+                  </li>
+                </ul>
+              </template>
+              <template v-else>
+                <ul class="search">
+                  <li v-for="(item, index) in suggestInfo.order" :key="index">
+                    <h6>{{ listType[item] }}</h6>
+                    <ul>
+                      <li v-for="(val, k) in suggestInfo[item]" :key="k">
+                        <a href="javascript:;" class="text" @click="jumpPage(val, item)">
+                          {{ val.name }}
+                          <template v-if="item === 'songs'">
+                            -<span v-for="(a, i) in val.artists" :key="i">{{ a.name + (i !== 0 ? ' / ' : '') }}</span>
+                          </template>
+                          <template v-else-if="item === 'albums'">
+                            -<span>{{ val.artist.name }}</span>
+                          </template>
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </template>
+            </div>
+          </div>
+
+          <!-- <el-button round class="btn" @click="logout">退出登录</el-button> -->
+          <div class="user-box">
+            <a href="Javascript:;" @click="dialog" v-if="!isLogin">登录</a>
+            <div class="user" v-else>
+              <img :src="userInfo.avatarUrl" alt="" />
+              <div class="userMenu">
+                <a href="javascript:;" @click="logout">
+                  <i>注销</i>
+                </a>
+                <!-- <el-button round class="btn" @click="logout">退出登录</el-button> -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -86,6 +94,9 @@ export default {
         elem = elem.parentNode
       }
       this.Rank = false
+    })
+    this.$bus.$on('scrollleft', (v) => {
+      this.left = v
     })
   },
   data() {
@@ -125,7 +136,8 @@ export default {
         albums: '专辑',
         playlists: '歌单'
       },
-      suggestInfo: {}
+      suggestInfo: {},
+      left: 0
     }
   },
   methods: {
@@ -248,6 +260,11 @@ export default {
   },
   computed: {
     ...mapState(['isLogin', 'userInfo'])
+  },
+  beforeDestroy() {
+    // document.onscroll = null
+    this.$bus.$off('scrollleft')
+    console.log('销毁了')
   }
 }
 </script>
@@ -279,6 +296,14 @@ export default {
     width: 80%;
     min-width: 1100px;
     z-index: 10;
+    .min-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+    }
     div {
       display: flex;
     }
@@ -397,7 +422,7 @@ export default {
   width: 90px;
   height: 32px;
   padding: 0 !important;
-  margin: 0 0 0 12px;
+  // margin: 0 0 0 12px;
   border: 1px solid #4f4f4f;
   background-color: transparent;
   font-size: 12px;
@@ -407,9 +432,7 @@ export default {
   display: flex;
   align-items: center;
   margin-left: 20px;
-  // padding-right: 22px;
   font-size: 12px;
-  // background-color: pink;
   width: 45px;
   height: 45px;
 
@@ -422,13 +445,46 @@ export default {
   .user {
     width: 100%;
     height: 100%;
+    position: relative;
+    &:hover {
+      .userMenu {
+        display: block;
+      }
+      img {
+        transform: rotate(1440deg);
+      }
+    }
+    .userMenu {
+      display: none;
+
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      a {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        color: #fff;
+        font-size: 12px;
+        i {
+          font-style: normal;
+        }
+      }
+    }
     // background: pink;
 
-    border-radius: 50%;
-    overflow: hidden;
+    // overflow: hidden;
     img {
       width: 100%;
       height: 100%;
+      border-radius: 50%;
+      transition: all 1s;
     }
   }
 }

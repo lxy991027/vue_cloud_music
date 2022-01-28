@@ -14,10 +14,14 @@ export default {
     this.getArtistMv()
   },
   mounted() {
-    window.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-      // console.log(this.top)
-    }
+    // window.onscroll = () => {
+    //   this.top = document.body.scrollTop + document.documentElement.scrollTop
+    //   // console.log(this.top)
+    // }
+    this.$bus.$on('scrollTop', (v) => {
+      console.log('触发了')
+      this.top = v
+    })
     this.sizeChenge()
     window.addEventListener('resize', this.sizeChenge)
   },
@@ -145,7 +149,8 @@ export default {
     }
   },
   beforeDestroy() {
-    window.onscroll = null
+    // window.onscroll = null
+    this.$bus.$off('scrollTop')
     window.removeEventListener('resize', this.sizeChenge)
     console.log('销毁了')
   }

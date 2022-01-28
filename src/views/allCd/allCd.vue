@@ -32,9 +32,13 @@ export default {
   },
   mounted() {
     this.offset = 0
-    window.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-    }
+    // window.onscroll = () => {
+    //   this.top = document.body.scrollTop + document.documentElement.scrollTop
+    // }
+    this.$bus.$on('scrollTop', (v) => {
+      console.log('触发了')
+      this.top = v
+    })
     this.sizeChenge()
     window.addEventListener('resize', this.sizeChenge)
   },
@@ -140,7 +144,8 @@ export default {
   },
 
   beforeDestroy() {
-    window.onscroll = null
+    // window.onscroll = null
+    this.$bus.$off('scrollTop')
     window.removeEventListener('resize', this.sizeChenge)
     console.log('销毁了')
   }

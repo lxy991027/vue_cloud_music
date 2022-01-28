@@ -72,9 +72,13 @@ export default {
     this.getArtist(this.params)
   },
   mounted() {
-    window.onscroll = () => {
-      this.top = document.body.scrollTop + document.documentElement.scrollTop
-    }
+    // window.onscroll = () => {
+    //   this.top = document.body.scrollTop + document.documentElement.scrollTop
+    // }
+    this.$bus.$on('scrollTop', (v) => {
+      console.log('这里是artist')
+      this.top = v
+    })
     window.addEventListener('resize', this.sizeChenge)
   },
   methods: {
@@ -181,7 +185,8 @@ export default {
     }
   },
   beforeDestroy() {
-    window.onscroll = null
+    // window.onscroll = null
+    this.$bus.$off('scrollTop')
     window.removeEventListener('resize', this.sizeChenge)
     console.log('销毁了')
   }
