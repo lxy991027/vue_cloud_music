@@ -44,28 +44,37 @@ export default {
     },
     async login() {
       this.loginForm.timestamp = Date.now()
-      const { data: res } = await this.$http.login(this.loginForm)
-      console.log(res, '登录')
-      if (res.code !== 200) {
-        this.$massege.error(res.msg)
-      } else {
-        this.getUserInfo(res.profile.userId)
-        // window.sessionStorage.setItem('token', res.token)
-        // window.sessionStorage.setItem('cookie', res.cookie)
-        // window.sessionStorage.setItem('isLogin', true)
-        this.showDialog(false)
+      try {
+        const { data: res } = await this.$http.login(this.loginForm)
+        console.log(res, '登录')
+        if (res.code !== 200) {
+          this.$message.error(res.msg)
+        } else {
+          this.getUserInfo(res.profile.userId)
+          // window.sessionStorage.setItem('token', res.token)
+          // window.sessionStorage.setItem('cookie', res.cookie)
+          // window.sessionStorage.setItem('isLogin', true)
+          this.showDialog(false)
+        }
+      } catch (error) {
+        this.$message.error(error.data.msg)
       }
     },
     async getUserInfo(uid) {
-      const { data: res } = await this.$http.getUserInfo({ uid: uid })
-      console.log(res, '详情')
-      if (res.code !== 200) {
-        this.$massege.error(res.msg)
-      } else {
-        // window.sessionStorage.setItem('userInfo', JSON.stringify(res.profile))
-        this.setLogin(true)
-        this.setUserInfo(res.profile)
-        console.log(this.$store.state.userInfo)
+      try {
+        const { data: res } = await this.$http.getUserInfo({ uid: uid })
+        console.log(res, '详情')
+        if (res.code !== 200) {
+          this.$message.error(res.msg)
+        } else {
+          // window.sessionStorage.setItem('userInfo', JSON.stringify(res.profile))
+          this.setLogin(true)
+          this.setUserInfo(res.profile)
+          this.$message.success('登录成功')
+          console.log(this.$store.state.userInfo)
+        }
+      } catch (error) {
+        this.$message.error(error.data.msg)
       }
     },
     go() {

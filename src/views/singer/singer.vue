@@ -1,6 +1,6 @@
 <template>
   <div class="singer-continer">
-    <div class="Top" ref="headerTop">
+    <div class="Top" ref="headerTop" :style="{ left: `-${left}px` }">
       <div class="w">
         <div class="singer-details w">
           <!-- 数据驱动视图，数据一变化就销毁原来的dom元素然后新建 -->
@@ -68,6 +68,9 @@ export default {
     document.onscroll = () => {
       this.top = document.body.scrollTop + document.documentElement.scrollTop
     }
+    this.$bus.$on('scrollleft', (v) => {
+      this.left = v
+    })
   },
   data() {
     return {
@@ -111,7 +114,8 @@ export default {
       // page: 0
 
       path: '',
-      showTag: true
+      showTag: true,
+      left: 0
     }
   },
   created() {
@@ -147,7 +151,7 @@ export default {
     },
     async getArtist() {
       this.artist = []
-      const { data: res } = await this.$http.artists({ id: this.$route.query.id })
+      const { data: res } = await this.$http.artists({ id: this.$route.query.id, timestamp: Date.now() })
       console.log(res)
       if (res.code !== 200) return this.$message.error('歌手信息获取失败')
 
@@ -228,6 +232,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.sizeChenge)
+    this.$bus.$off('scrollleft')
     console.log('销毁了')
   }
 }

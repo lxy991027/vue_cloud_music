@@ -99,6 +99,7 @@ export default {
     // 登录及未登录下获取歌单中歌曲的列表
     async getDetail(params) {
       // this.isLoading = true
+      params.timestamp = Date.now()
       const { data: res } = await this.$http.playlistdetail(params)
 
       if (res.code !== 200) {
@@ -158,7 +159,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['userInfo'])
+    ...mapState(['userInfo', 'isLogin'])
   },
   components: {
     songList,
@@ -174,6 +175,9 @@ export default {
         this.init(this.id)
       },
       deep: true
+    },
+    isLogin() {
+      this.init(this.id)
     }
   }
 }
@@ -222,8 +226,11 @@ export default {
         align-items: center;
         height: 100%;
         width: 32%;
+
         // background-color: orchid;
         img {
+          border-radius: 15px;
+          border: 0;
           width: 90%;
           height: 90%;
         }

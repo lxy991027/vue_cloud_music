@@ -264,6 +264,9 @@ export default {
     },
     songTime(newVal, oldVal) {
       if (this.isPlay) this.cunSongTime = newVal
+    },
+    isLogin() {
+      this.init()
     }
   },
   components: {

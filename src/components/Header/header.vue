@@ -19,7 +19,7 @@
             <el-input placeholder="请输入歌名、歌词、歌手或专辑" clearable ref="input" v-model="input3" class="input-with-select" @focus="showRank" @blur="showRanks" @input="getSerachSuggest">
               <el-button slot="append" icon="el-icon-search" @click="up"></el-button>
             </el-input>
-            <div class="rank" v-if="(Rank && input3 === '') || suggestInfo.order">
+            <div class="rank" v-if="this.Rank && (this.input3 === '' || !(typeof this.suggestInfo.order === 'undefined'))">
               <template v-if="input3 === ''">
                 <h6>热门搜索</h6>
                 <ul>

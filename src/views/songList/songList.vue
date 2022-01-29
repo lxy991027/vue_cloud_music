@@ -6,6 +6,7 @@
 
 <script>
 import songList from '@/components/songList/song-list.vue'
+import { mapState } from 'vuex'
 export default {
   components: {
     songList
@@ -24,7 +25,7 @@ export default {
       this.getArtist()
     },
     async getArtist() {
-      const { data: res } = await this.$http.artists({ id: this.$route.query.id })
+      const { data: res } = await this.$http.artists({ id: this.$route.query.id, timestamp: new Date().valueOf() })
       console.log(res)
       if (res.code !== 200) return this.$message.error('歌手信息获取失败')
       // this.artist[0] = res.artist
@@ -34,6 +35,9 @@ export default {
       console.log(this.hotSongs)
     }
   },
+  computed: {
+    ...mapState(['userInfo', 'isLogin'])
+  },
   watch: {
     $route: {
       handler() {
@@ -41,6 +45,9 @@ export default {
         this.init()
       },
       deep: true
+    },
+    isLogin() {
+      this.init()
     }
   }
 }

@@ -99,6 +99,7 @@ export default {
       }
     }
   },
+
   data() {
     return {
       opt: {
@@ -183,11 +184,15 @@ export default {
       showDa: true,
       playBarBottom: -50,
       showControlssetTimeout: 0,
-      showControlLock: false
+      showControlLock: false,
+      left: 0
     }
   },
   mounted() {
     this.loadPlay()
+    this.$bus.$on('scrollleft', (v) => {
+      this.left = v
+    })
   },
   methods: {
     loadPlay() {
@@ -442,7 +447,7 @@ export default {
         console.log('去你吗')
         // this.currenIndex = 0
         console.log('111')
-        const x1 = e.clientX - this.getAbsLeft(this.$refs.videominProgress)
+        const x1 = e.clientX - this.getAbsLeft(this.$refs.videominProgress) + this.left
         const subWidth = x1 - this.$refs.videominProgress.offsetWidth
         // this.$refs.minProgress.style.width = this.$refs.minProgress.offsetWidth + subWidth + 'px'
         let percent = ((this.$refs.videominProgress.offsetWidth + subWidth) / this.$refs.videoProgress.offsetWidth) * 100

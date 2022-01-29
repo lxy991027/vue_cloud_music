@@ -720,17 +720,18 @@ export default {
       // 把当前播放的音乐的id赋值给vuex中的变量，方便其他组件检测
       this.$store.state.playId = this.playList[index].id
 
-      const { data: res } = await this.$http.cloudDetail({ ids })
+      const { data: res } = await this.$http.cloudDetail({ ids, timestamp: Date.now() })
       console.log(res, 'url')
       if (res.code !== 200) return this.$message.error('歌曲播放失败')
 
       console.log(res.data[0], 'URL2')
       if (res.data[0].code !== 200) {
-        this.$store.state.isPlayed = false
-        this.$refs.music.src = ''
-        this.nowSong = []
-        this.$store.state.playId = ''
-        clearTimeout(this.imgRotateTime)
+        // this.$store.state.isPlayed = false
+        // this.$refs.music.src = ''
+        // this.nowSong = []
+        // this.$store.state.playId = ''
+        // clearTimeout(this.imgRotateTime)
+        this.del({ index, id: this.playList[index].id })
         return this.$message.error('播放失败')
       }
       // this.$store.state.isPlayed = false
@@ -970,7 +971,7 @@ export default {
   right: 15%;
   width: 70px;
   height: 30px;
-  // background-color: #ffffff;
+  background-color: #ffffff;
   border-radius: 25px 25px 0 0;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   a {
@@ -997,6 +998,7 @@ export default {
   min-width: 1100px;
   .min-box {
     position: absolute;
+    display: flex;
     top: 0;
     left: 0;
     width: 100%;

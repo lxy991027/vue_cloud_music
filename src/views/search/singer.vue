@@ -20,6 +20,9 @@ export default {
     }
   },
   mounted() {
+    this.$nextTick(() => {
+      this.sizeChenge()
+    })
     window.addEventListener('resize', this.sizeChenge)
     // this.sizeChenge()
   },
@@ -38,15 +41,6 @@ export default {
       console.log(this.symbolic)
       // console.log(this.bodyWidth)
       // this.showCd()
-    }
-  },
-  watch: {
-    list(newVal) {
-      if (newVal !== []) {
-        this.$nextTick(() => {
-          this.sizeChenge()
-        })
-      }
     }
   },
   beforeDestroy() {

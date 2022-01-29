@@ -20,7 +20,7 @@ const topArtists = ({ limit = 30, offset = 0 }) => api.get(`/top/artists?limit=$
 // 歌手介绍
 const artistDesc = ({ id = '' }) => api.get(`/artist/desc?id=${id}`, {})
 // 歌手热门歌曲
-const artists = ({ id = '' }) => api.get(`/artists?id=${id}`, {})
+const artists = ({ id = '', timestamp = 0 }) => api.get(`/artists?id=${id}&timestamp=${timestamp}`, {})
 // 获取歌词
 // /lyric?id=33894312
 const getLyric = ({ id = '' }) => api.get(`/lyric?id=${id}`)
@@ -53,9 +53,9 @@ const albumSub = ({ id = '', t = 1 }) => api.get(`/album/sub?id=${id}&t=${t}`, {
 const comment = ({ t = 1, type = 0, id = '', content = '', commentId = '' }) => api.get(`/comment?t=${t}&type=${type}&id=${id}&content=${content}&commentId=${commentId}`, {})
 /* ********* 专辑 ********* */
 // 获取专辑内容
-const album = ({ id = '' }) => api.get(`/album?id=${id}`, {})
+const album = ({ id = '', timestamp = 0 }) => api.get(`/album?id=${id}&timestamp=${timestamp}`, {})
 // 专辑动态信息
-const albumDynamic = ({ id = '' }) => api.get(`/album/detail/dynamic?id=${id}`, {})
+const albumDynamic = ({ id = '', timestamp = 0 }) => api.get(`/album/detail/dynamic?id=${id}&timestamp=${timestamp}`, {})
 
 // 专辑评论
 const albumComment = ({ id = '', limit = 20, offset = 0, before = 0, timestamp = 0 }) => api.get(`/comment/album?id=${id}&limit=${limit}&offset=${offset}&before=${before}&timestamp=${timestamp}`, {})
@@ -70,7 +70,7 @@ const playlistSCollect = ({ id = '', limit = 20, offset = 0 }) => api.get(`/play
 // 相关歌单推荐
 const playlistRelated = ({ id = '' }) => api.get(`/related/playlist?id=${id}`, {})
 // 歌单评论
-const playlistComment = ({ id = '', limit = 20, offset = 0, before = 0 }) => api.get(`/comment/playlist?id=${id}&limit=${limit}&offset=${offset}&before=${before}`, {})
+const playlistComment = ({ id = '', limit = 20, offset = 0, before = 0, timestamp = 0 }) => api.get(`/comment/playlist?id=${id}&limit=${limit}&offset=${offset}&before=${before}&timestamp=${timestamp}`, {})
 // 获取歌手 mv
 const artistMv = ({ id = '', limit = 50, offset = 0 }) => api.get(`/artist/mv?id=${id}&limit=${limit}&offset=${offset}`, {})
 // 登录
@@ -90,7 +90,7 @@ const subArtist = () => api.get('/artist/sublist', {})
 
 const cloud = ({ limit = 200, offset = 0 }) => api.get(`/user/cloud?limit=${limit}&offset=${offset}`, {})
 
-const cloudDetail = ({ ids = '' }) => api.get(`/song/url?id=${ids}`, {})
+const cloudDetail = ({ ids = '', timestamp = 0 }) => api.get(`/song/url?id=${ids}&timestamp=${timestamp}`, {})
 // 获取我收藏的专辑
 const getAlbumSublist = ({ limit = 25, offset = 0 }) => api.get(`/album/sublist?limit=${limit}&offset=${offset}`, {})
 // 收藏、取消歌单 1：收藏 2取消
@@ -114,6 +114,14 @@ const serachHot = () => api.get('/search/hot', {})
 const serachSuggest = ({ keywords = '' }) => api.get(`/search/suggest?keywords=${keywords}`, {})
 // 搜索类型；默认为 1 即单曲 , 取值意义 : 1: 单曲, 10: 专辑, 100: 歌手, 1000: 歌单, 1002: 用户, 1004: MV, 1006: 歌词, 1009: 电台, 1014: 视频, 1018:综合
 const cloudsearch = ({ keywords = '', limit = 30, offset = 0, type = '1' }) => api.get(`/cloudsearch?keywords=${keywords}&limit=${limit}&offset=${offset}&type=${type}`, {})
+/*
+ * 给评论点赞
+ * id: 对应资源id
+ * cid: 评论id
+ * t: 是否点赞 1: 是  0: 取消
+ * type: 0: 歌曲 1: mv 2: 歌单 3: 专辑  4: 电台 5: 视频 6: 动态
+ */
+const commentLike = ({ id = '', cid = '', t = 1, type = 0 }) => api.get(`/comment/like?id=${id}&cid=${cid}&t=${t}&type=${type}`, {})
 export default {
   getBanner,
   getHotMusicList,
@@ -163,5 +171,6 @@ export default {
   playList,
   serachHot,
   serachSuggest,
-  cloudsearch
+  cloudsearch,
+  commentLike
 }

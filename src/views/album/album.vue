@@ -82,10 +82,10 @@ export default {
     },
     // 相关歌单推荐
     async getAlbum(params) {
-      const { data: res } = await this.$http.album({ id: this.id })
+      const { data: res } = await this.$http.album({ id: this.id, timestamp: new Date().valueOf() })
 
       if (res.code !== 200) {
-        return this.$msg.error('数据请求失败')
+        return this.$message.error('数据请求失败')
       }
       // console.log(res)
       this.details = res.album
@@ -120,6 +120,7 @@ export default {
       // console.log(this.hotAlbums)
     },
     async getAlbumDynamic(params) {
+      params.timestamp = Date.now()
       const { data: res } = await this.$http.albumDynamic(params)
 
       if (res.code !== 200) {
@@ -154,7 +155,7 @@ export default {
     // this.getArtistAlbum()
   },
   computed: {
-    ...mapState(['userInfo']),
+    ...mapState(['userInfo', 'isLogin']),
     artistsName() {
       if (this.details.artists) return this.details.artists[0].name
       return '...'
@@ -176,6 +177,9 @@ export default {
         this.init()
       },
       deep: true
+    },
+    isLogin() {
+      this.init()
     }
   }
 }
@@ -204,6 +208,7 @@ export default {
       // background-color: orange;
       img {
         position: absolute;
+        border-radius: 15px;
         top: 50%;
         left: 0;
         transform: translate(0, -50%);

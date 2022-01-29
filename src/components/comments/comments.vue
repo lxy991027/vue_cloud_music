@@ -1,5 +1,21 @@
 <template>
   <div class="Comments-continer">
+    <!-- v-if="showDelDialog" -->
+    <div class="delDialog" v-if="showDelDialog">
+      <div class="box">
+        <div class="title">
+          <span>删除评论</span>
+          <a href="javascript:;" class="el-icon-close" @click="close"></a>
+        </div>
+        <div class="info">
+          <p>是否删除此评论</p>
+          <div class="buttons">
+            <a href="javascript:;" class="no" @click="close">取消</a>
+            <a href="javascript:;" class="yes" @click="delcomment(item, index, types)">确定</a>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="commentBox">
       <div class="zhezhao" v-if="!isLogin">
         <span>请<a href="javascript:;" @click="showLogin">登录</a>后评论</span>
@@ -15,6 +31,7 @@
       </div>
       <div class="comment_textarea">
         <div class="textarea">
+          {{ text }}
           <textarea placeholder="期待你的神评论……" v-model="text"></textarea>
         </div>
         <span class="error" v-if="text.length > 500">字数超出限制</span>
@@ -44,6 +61,12 @@
             </template>
             <div class="time">
               <em>{{ item.time | format }}</em>
+              <div class="comment_oper">
+                <!-- v-if="userInfo && userInfo.userId === item.user.userId"  -->
+                <a href="javascript:;" class="comment_del" v-if="userInfo && userInfo.userId === item.user.userId" @click="DelDialog(item, index, 'comments')"><i class="iconfont icon-del"></i></a>
+                <a href="javascript:;" :class="[item.liked ? 'active' : '']" @click="likeComment(item)"><i class="iconfont icon-praise"></i>({{ item.likedCount }})</a>
+                <a href="javascript:;" class="replyComment" @click="replyComment(item, index)"><i class="iconfont icon-comment"></i></a>
+              </div>
             </div>
           </div>
         </li>
@@ -56,7 +79,7 @@
           <div class="users">
             <router-link class="name" :to="{ path: '/user', query: { id: item.user.userId } }">{{ item.user.nickname }}</router-link>
             <p>{{ item.content }}</p>
-            <template v-if="item.beReplied.length">
+            <template>
               <div class="comment_reply" v-for="replyItem in item.beReplied" :key="replyItem.beRepliedCommentId">
                 <router-link :to="{ path: '/user', query: { id: replyItem.user.userId } }">
                   {{ replyItem.user.nickname }}
@@ -66,6 +89,12 @@
             </template>
             <div class="time">
               <em>{{ item.time | format }}</em>
+              <div class="comment_oper">
+                <!-- v-if="userInfo && userInfo.userId === item.user.userId"  -->
+                <a href="javascript:;" class="comment_del" v-if="userInfo && userInfo.userId === item.user.userId" @click="DelDialog(item, index, 'comments')"><i class="iconfont icon-del"></i></a>
+                <a href="javascript:;" :class="[item.liked ? 'active' : '']" @click="likeComment(item)"><i class="iconfont icon-praise"></i>({{ item.likedCount }})</a>
+                <a href="javascript:;" class="replyComment" @click="replyComment(item, index)"><i class="iconfont icon-comment"></i></a>
+              </div>
             </div>
           </div>
         </li>
@@ -92,7 +121,12 @@ export default {
       load: false,
       page: 0,
       text: '',
-      showError: false
+      showError: false,
+      showDelDialog: false,
+      item: null,
+      index: 0,
+      // 删除的是否热评
+      types: ''
     }
   },
   created() {
@@ -129,7 +163,7 @@ export default {
       }
     },
     async getSongComment(cb) {
-      const { data: res } = await this.$http.commentSong({ id: this.id, limit: this.limit, offset: this.offset, before: this.before })
+      const { data: res } = await this.$http.commentSong({ id: this.id, limit: this.limit, offset: this.offset, before: this.before, timestamp: Date.now() })
       // if (this.comments.length !== 0) {
       //   console.log(this.comments[this.comments.length - 1].time)
       //   this.before = this.comments[this.comments.length - 1].time
@@ -143,18 +177,18 @@ export default {
       //   console.log(this.comments[this.comments.length - 1].time)
       //   this.before = this.comments[this.comments.length - 1].time
       // }
-      const { data: res } = await this.$http.commentMv({ id: this.id, limit: this.limit, offset: this.offset, before: this.before })
+      const { data: res } = await this.$http.commentMv({ id: this.id, limit: this.limit, offset: this.offset, before: this.before, timestamp: Date.now() })
       console.log(res, '评论')
       this.msgHandler(res, cb)
     },
     async getAlbumComment(cb) {
-      const { data: res } = await this.$http.albumComment({ id: this.id, limit: this.limit, offset: this.offset, before: this.before })
+      const { data: res } = await this.$http.albumComment({ id: this.id, limit: this.limit, offset: this.offset, before: this.before, timestamp: Date.now() })
 
       this.msgHandler(res, cb)
     },
     // 歌单精彩评论
     async getComments(cb) {
-      const { data: res } = await this.$http.playlistComment({ id: this.id, limit: this.limit, offset: this.offset, before: this.before })
+      const { data: res } = await this.$http.playlistComment({ id: this.id, limit: this.limit, offset: this.offset, before: this.before, timestamp: Date.now() })
 
       this.msgHandler(res, cb)
     },
@@ -202,7 +236,7 @@ export default {
       this.subComment()
     },
     // 发布/删除/回复评论
-    async commentHandler(t, content, commentId) {
+    async commentHandler(t, content, commentId, index, type) {
       console.log('调用')
       const params = {
         t: t, // 0删除 1发送 2回复
@@ -212,21 +246,33 @@ export default {
         commentId: commentId // 回复的评论id
       }
       const { data: res } = await this.$http.comment(params)
-
+      console.log(res, '这里是评论')
       if (res.code !== 200) {
-        return this.$message.error('数据请求失败')
+        return this.$message.error(res.msg)
       }
       if (res.code === 250) {
         return this.$message.error(res.msg)
       }
-      this.test = ''
-      this.getComment()
+      this.text = ''
+      console.log(this.test, '这个是test')
+      // this.page = 0
+      // this.offset = 0
+      // this.comments = []
+      // this.getComment()
       if (t === 0) {
-        this.$massege.success('删除评论成功！')
+        this.$message.success('删除评论成功！')
+        if (type === 'comments') {
+          this.comments.splice(index, 1)
+        } else {
+          this.hotComments.splice(index, 1)
+        }
       } else if (t === 1) {
-        this.$massege.success('评论成功！')
+        res.comment.liked = false
+        res.comment.likedCount = 0
+        this.comments.unshift(res.comment)
+        this.$message.success('评论成功！')
       } else if (t === 2) {
-        this.$massege.success('回复评论成功！')
+        this.$message.success('回复评论成功！')
         // this.replyCommentId = 0
         // this.replyIndex = -1
       }
@@ -241,6 +287,46 @@ export default {
     },
     showLogin() {
       this.showDialog(true)
+    },
+    // 给评论点赞
+    async likeComment(item) {
+      console.log(item)
+      if (!this.isLogin) {
+        this.showLogin()
+        return
+      }
+
+      const { data: res } = await this.$http.commentLike({ id: this.id, cid: item.commentId, t: Number(!item.liked), type: this.type })
+      console.log(res)
+      if (res.code !== 200) {
+        return this.$message.error('数据请求失败')
+      }
+      if (item.liked) {
+        this.$message.success('取消点赞成功')
+        item.likedCount--
+      } else {
+        this.$message.success('点赞成功')
+        item.likedCount++
+      }
+      item.liked = !item.liked
+      // this.getComment()
+    },
+    // 删除评论
+    delComment(item, index, type) {
+      this.commentHandler(0, '', item.commentId, index, type)
+    },
+    close() {
+      this.showDelDialog = false
+    },
+    delcomment(item, index, type) {
+      this.delComment(item, index, type)
+      this.showDelDialog = false
+    },
+    DelDialog(item, index, type) {
+      this.item = item
+      this.index = index
+      this.types = type
+      this.showDelDialog = true
     }
   },
   computed: {
@@ -282,12 +368,13 @@ export default {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: #f2f2f2;
     z-index: 10;
+    border-radius: 20px;
     span {
       display: flex;
 
-      color: #fff;
+      color: #606266;
       font-size: 30px;
 
       a {
@@ -432,6 +519,8 @@ export default {
         margin-top: 5px;
       }
       .time {
+        display: flex;
+        justify-content: space-between;
         font-size: 14px;
         color: #999;
         margin-top: 5px;
@@ -486,6 +575,8 @@ export default {
         margin-top: 5px;
       }
       .time {
+        display: flex;
+        justify-content: space-between;
         font-size: 14px;
         color: #999;
         margin-top: 5px;
@@ -520,5 +611,100 @@ export default {
 }
 .color {
   color: red;
+}
+.comment_oper {
+  a {
+    margin-left: 10px;
+    color: #999;
+  }
+}
+.active {
+  color: #e60026 !important;
+}
+.dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.delDialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  .box {
+    width: 500px;
+    height: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    .title {
+      padding: 0 10px;
+      background-color: #2d2d2d;
+      width: 100%;
+      height: 35px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      span {
+        color: #f5f5f5;
+        font-weight: bold;
+        font-size: 14px;
+      }
+    }
+    .info {
+      display: flex;
+      flex-direction: column;
+      padding: 0 10px;
+      width: 100%;
+      height: 265px;
+      // background-color: pink;
+      justify-content: space-between;
+      p {
+        margin-top: 35px;
+        font-size: 20px;
+        text-align: center;
+        font-weight: 700;
+        color: rgba(0, 0, 0, 0.7);
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+      }
+      .buttons {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 80px;
+        margin-bottom: 50px;
+        a {
+          // background-color: red;
+          height: 30px;
+          width: 100px;
+          border-radius: 15px;
+          text-align: center;
+          line-height: 30px;
+          color: rgba(0, 0, 0, 0.7);
+          font-size: 15px;
+          font-weight: 600;
+          box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+        }
+        .yes {
+          background-color: rgba(255, 0, 0, 0.5);
+        }
+        .no {
+          background-color: #dcdcdc;
+        }
+      }
+    }
+    .el-icon-close {
+      font-size: 20px;
+      color: #f5f5f5;
+    }
+  }
 }
 </style>
