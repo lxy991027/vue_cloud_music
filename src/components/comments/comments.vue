@@ -44,57 +44,83 @@
     <div>
       <ul class="hotComments">
         <li v-for="item in hotComments" :key="item.commentId + 'index'">
-          <div class="hot">热评</div>
-          <div class="img">
-            <img :src="item.user.avatarUrl + '?param=50y50'" alt="" />
+          <div class="liBox">
+            <div class="hot">热评</div>
+            <div class="img">
+              <img :src="item.user.avatarUrl + '?param=50y50'" alt="" />
+            </div>
+            <div class="users">
+              <router-link class="name" :to="{ path: '/user', query: { id: item.user.userId } }">{{ item.user.nickname }}</router-link>
+              <p>{{ item.content }}</p>
+              <template v-if="item.beReplied.length">
+                <div class="comment_reply" v-for="replyItem in item.beReplied" :key="replyItem.beRepliedCommentId">
+                  <router-link :to="{ path: '/user', query: { id: replyItem.user.userId } }">
+                    {{ replyItem.user.nickname }}
+                  </router-link>
+                  : {{ replyItem.content }}
+                </div>
+              </template>
+              <div class="time">
+                <em>{{ item.time | format }}</em>
+                <div class="comment_oper">
+                  <!-- v-if="userInfo && userInfo.userId === item.user.userId"  -->
+                  <a href="javascript:;" class="comment_del" v-if="userInfo && userInfo.userId === item.user.userId" @click="DelDialog(item, index, 'comments')"><i class="iconfont icon-del"></i></a>
+                  <a href="javascript:;" :class="[item.liked ? 'active' : '']" @click="likeComment(item)"><i class="iconfont icon-praise"></i>({{ item.likedCount }})</a>
+                  <a href="javascript:;" class="replyComment" @click="showMsgBox('' + item.commentId + index)"><i class="iconfont icon-comment"></i></a>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="users">
-            <router-link class="name" :to="{ path: '/user', query: { id: item.user.userId } }">{{ item.user.nickname }}</router-link>
-            <p>{{ item.content }}</p>
-            <template v-if="item.beReplied.length">
-              <div class="comment_reply" v-for="replyItem in item.beReplied" :key="replyItem.beRepliedCommentId">
-                <router-link :to="{ path: '/user', query: { id: replyItem.user.userId } }">
-                  {{ replyItem.user.nickname }}
-                </router-link>
-                : {{ replyItem.content }}
-              </div>
-            </template>
-            <div class="time">
-              <em>{{ item.time | format }}</em>
-              <div class="comment_oper">
-                <!-- v-if="userInfo && userInfo.userId === item.user.userId"  -->
-                <a href="javascript:;" class="comment_del" v-if="userInfo && userInfo.userId === item.user.userId" @click="DelDialog(item, index, 'comments')"><i class="iconfont icon-del"></i></a>
-                <a href="javascript:;" :class="[item.liked ? 'active' : '']" @click="likeComment(item)"><i class="iconfont icon-praise"></i>({{ item.likedCount }})</a>
-                <a href="javascript:;" class="replyComment" @click="replyComment(item, index)"><i class="iconfont icon-comment"></i></a>
-              </div>
+          <div class="msgBox" :class="'msgBox' + item.commentId + index">
+            <h3>
+              <p>我回复@{{ item.user.nickname }}:</p>
+              <a href="javascript:;" class="el-icon-close" @click="offMsgBox('' + item.commentId + index)"></a>
+            </h3>
+            <textarea @input="valueLength('' + item.commentId + index)" :class="'textarea' + item.commentId + index" placeholder="期待你的神评......"></textarea>
+            <div class="button">
+              <span :class="'span' + item.commentId + index">0\500</span>
+              <a href="javascript:;" @click="replyMsg('textarea' + item.commentId + index, item, index)">提交</a>
             </div>
           </div>
         </li>
       </ul>
       <ul class="comments">
         <li v-for="(item, index) in comments" :key="item.commentId + index">
-          <div class="img">
-            <img :src="item.user.avatarUrl + '?param=50y50'" alt="" />
+          <div class="liBox">
+            <div class="img">
+              <img :src="item.user.avatarUrl + '?param=50y50'" alt="" />
+            </div>
+            <div class="users">
+              <router-link class="name" :to="{ path: '/user', query: { id: item.user.userId } }">{{ item.user.nickname }}</router-link>
+              <p>{{ item.content }}</p>
+              <template>
+                <div class="comment_reply" v-for="replyItem in item.beReplied" :key="replyItem.beRepliedCommentId">
+                  <router-link :to="{ path: '/user', query: { id: replyItem.user.userId } }">
+                    {{ replyItem.user.nickname }}
+                  </router-link>
+                  : {{ replyItem.content }}
+                </div>
+              </template>
+              <div class="time">
+                <em>{{ item.time | format }}</em>
+                <div class="comment_oper">
+                  <!-- v-if="userInfo && userInfo.userId === item.user.userId"  -->
+                  <a href="javascript:;" class="comment_del" v-if="userInfo && userInfo.userId === item.user.userId" @click="DelDialog(item, index, 'comments')"><i class="iconfont icon-del"></i></a>
+                  <a href="javascript:;" :class="[item.liked ? 'active' : '']" @click="likeComment(item)"><i class="iconfont icon-praise"></i>({{ item.likedCount }})</a>
+                  <a href="javascript:;" class="replyComment" @click="showMsgBox('' + item.commentId + index)"><i class="iconfont icon-comment"></i></a>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="users">
-            <router-link class="name" :to="{ path: '/user', query: { id: item.user.userId } }">{{ item.user.nickname }}</router-link>
-            <p>{{ item.content }}</p>
-            <template>
-              <div class="comment_reply" v-for="replyItem in item.beReplied" :key="replyItem.beRepliedCommentId">
-                <router-link :to="{ path: '/user', query: { id: replyItem.user.userId } }">
-                  {{ replyItem.user.nickname }}
-                </router-link>
-                : {{ replyItem.content }}
-              </div>
-            </template>
-            <div class="time">
-              <em>{{ item.time | format }}</em>
-              <div class="comment_oper">
-                <!-- v-if="userInfo && userInfo.userId === item.user.userId"  -->
-                <a href="javascript:;" class="comment_del" v-if="userInfo && userInfo.userId === item.user.userId" @click="DelDialog(item, index, 'comments')"><i class="iconfont icon-del"></i></a>
-                <a href="javascript:;" :class="[item.liked ? 'active' : '']" @click="likeComment(item)"><i class="iconfont icon-praise"></i>({{ item.likedCount }})</a>
-                <a href="javascript:;" class="replyComment" @click="replyComment(item, index)"><i class="iconfont icon-comment"></i></a>
-              </div>
+          <div class="msgBox" :class="'msgBox' + item.commentId + index">
+            <h3>
+              <p>我回复@{{ item.user.nickname }}:</p>
+              <a href="javascript:;" class="el-icon-close" @click="offMsgBox('' + item.commentId + index)"></a>
+            </h3>
+            <textarea @input="valueLength('' + item.commentId + index)" :class="'textarea' + item.commentId + index" placeholder="期待你的神评......"></textarea>
+            <div class="button">
+              <span :class="'span' + item.commentId + index">0\500</span>
+              <a href="javascript:;" @click="replyMsg('textarea' + item.commentId + index, item, index)">提交</a>
             </div>
           </div>
         </li>
@@ -236,7 +262,7 @@ export default {
       this.subComment()
     },
     // 发布/删除/回复评论
-    async commentHandler(t, content, commentId, index, type) {
+    async commentHandler(t, content, commentId, index, type, item) {
       console.log('调用')
       const params = {
         t: t, // 0删除 1发送 2回复
@@ -272,6 +298,11 @@ export default {
         this.comments.unshift(res.comment)
         this.$message.success('评论成功！')
       } else if (t === 2) {
+        res.comment.liked = false
+        res.comment.likedCount = 0
+        this.comments.unshift(res.comment)
+        res.comment.beReplied = [item]
+        console.log(item)
         this.$message.success('回复评论成功！')
         // this.replyCommentId = 0
         // this.replyIndex = -1
@@ -327,6 +358,44 @@ export default {
       this.index = index
       this.types = type
       this.showDelDialog = true
+    },
+    showMsgBox(id) {
+      console.log(`.msgBox${id}`)
+      const msgBox = document.querySelector(`.msgBox${id}`)
+      console.log(msgBox)
+      const count = document.querySelector(`.span${id}`)
+      count.innerHTML = '0\\500'
+
+      msgBox.style.display = 'block'
+
+      // this.$refs[id].style.display = 'block'
+    },
+    offMsgBox(id) {
+      const msgBox = document.querySelector(`.msgBox${id}`)
+      const textarea = document.querySelector(`.textarea${id}`)
+      console.log(msgBox, textarea)
+
+      msgBox.style.display = 'none'
+      textarea.value = ''
+    },
+    replyMsg(dom, item, index) {
+      if (!this.isLogin) {
+        this.showLogin()
+        return
+      }
+      // console.log(item.commentId.length, item.commentId, '544335')
+
+      const msg = document.querySelector(`.${dom}`).value
+      // console.log(msg)
+      if (msg.length > 500) return this.$message.error('内容长度超过500')
+      this.commentHandler(2, msg, item.commentId, null, null, item)
+      this.offMsgBox('' + item.commentId + index)
+    },
+    valueLength(dom) {
+      const doms = document.querySelector(`.textarea${dom}`).value.length
+      console.log(doms)
+      const count = document.querySelector(`.span${dom}`)
+      count.innerHTML = `${doms}\\500`
     }
   },
   computed: {
@@ -488,12 +557,15 @@ export default {
     top: -5px;
   }
   li {
-    position: relative;
-    display: flex;
-    // background-color: red;
     margin-bottom: 15px;
     padding: 10px 0;
     border-bottom: 1px solid #f2f2f2;
+  }
+  .liBox {
+    position: relative;
+    display: flex;
+    // background-color: red;
+
     .img {
       width: 50px;
       height: 50px;
@@ -545,11 +617,16 @@ export default {
   margin-top: 15px;
   width: 100%;
   li {
-    display: flex;
-    // background-color: red;
     margin-bottom: 15px;
     padding: 10px 0;
     border-bottom: 1px solid #f2f2f2;
+  }
+  .liBox {
+    display: flex;
+    // background-color: red;
+    // margin-bottom: 15px;
+    // padding: 10px 0;
+    // border-bottom: 1px solid #f2f2f2;
     .img {
       width: 50px;
       height: 50px;
@@ -704,6 +781,54 @@ export default {
     .el-icon-close {
       font-size: 20px;
       color: #f5f5f5;
+    }
+  }
+}
+.msgBox {
+  display: none;
+  width: 100%;
+  // height: 200px;
+  border-radius: 10px;
+  background-color: #efefef;
+  padding: 6px;
+  h3 {
+    display: flex;
+    justify-content: space-between;
+    a {
+      color: #999;
+    }
+    p {
+      color: #999;
+      font-size: 13px;
+    }
+  }
+  textarea {
+    margin-top: 5px;
+    resize: none;
+    outline: none;
+    border: 0;
+    width: 100%;
+    min-height: 50px;
+    border-radius: 10px;
+    padding: 5px;
+  }
+  .button {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    span {
+      font-size: 10px;
+    }
+    a {
+      display: block;
+      border-radius: 20px;
+      text-align: center;
+      line-height: 25px;
+      width: 60px;
+      height: 25px;
+      color: #f5f5f5;
+      font-size: 14px;
+      background-color: #e60026;
     }
   }
 }
