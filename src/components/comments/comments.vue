@@ -76,7 +76,10 @@
               <p>我回复@{{ item.user.nickname }}:</p>
               <a href="javascript:;" class="el-icon-close" @click="offMsgBox('' + item.commentId + index)"></a>
             </h3>
-            <textarea @input="valueLength('' + item.commentId + index)" :class="'textarea' + item.commentId + index" placeholder="期待你的神评......"></textarea>
+            <div class="text">
+              <div class="text-n" :class="'text' + item.commentId + index"></div>
+              <textarea @input="valueLength('' + item.commentId + index)" :class="'textarea' + item.commentId + index" placeholder="期待你的神评......"></textarea>
+            </div>
             <div class="button">
               <span :class="'span' + item.commentId + index">0\500</span>
               <a href="javascript:;" @click="replyMsg('textarea' + item.commentId + index, item, index)">提交</a>
@@ -117,7 +120,10 @@
               <p>我回复@{{ item.user.nickname }}:</p>
               <a href="javascript:;" class="el-icon-close" @click="offMsgBox('' + item.commentId + index)"></a>
             </h3>
-            <textarea @input="valueLength('' + item.commentId + index)" :class="'textarea' + item.commentId + index" placeholder="期待你的神评......"></textarea>
+            <div class="text">
+              <div class="text-n" :class="'text' + item.commentId + index"></div>
+              <textarea @input="valueLength('' + item.commentId + index)" :class="'textarea' + item.commentId + index" placeholder="期待你的神评......"></textarea>
+            </div>
             <div class="button">
               <span :class="'span' + item.commentId + index">0\500</span>
               <a href="javascript:;" @click="replyMsg('textarea' + item.commentId + index, item, index)">提交</a>
@@ -364,8 +370,9 @@ export default {
       const msgBox = document.querySelector(`.msgBox${id}`)
       console.log(msgBox)
       const count = document.querySelector(`.span${id}`)
+      const background = document.querySelector(`.text${id}`)
       count.innerHTML = '0\\500'
-
+      background.innerHTML = ''
       msgBox.style.display = 'block'
 
       // this.$refs[id].style.display = 'block'
@@ -395,7 +402,14 @@ export default {
       const doms = document.querySelector(`.textarea${dom}`).value.length
       console.log(doms)
       const count = document.querySelector(`.span${dom}`)
+      const background = document.querySelector(`.text${dom}`)
+      background.innerText = document.querySelector(`.textarea${dom}`).value
       count.innerHTML = `${doms}\\500`
+      if (doms >= 500) {
+        count.style.color = 'red'
+      } else {
+        count.style.color = ''
+      }
     }
   },
   computed: {
@@ -802,16 +816,41 @@ export default {
       font-size: 13px;
     }
   }
-  textarea {
-    margin-top: 5px;
-    resize: none;
-    outline: none;
-    border: 0;
+  .text {
+    position: relative;
     width: 100%;
+    margin-top: 5px;
     min-height: 50px;
-    border-radius: 10px;
-    padding: 5px;
+    // background-color: red;
+    .text-n {
+      width: 100%;
+      min-height: 50px;
+      border-radius: 10px;
+      padding: 5px;
+      padding-bottom: calc(5px + 13px);
+      font-size: 13px;
+      // background-color: pink;
+      word-wrap: break-word;
+      word-break: normal;
+    }
+    textarea {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      // bottom: 0;
+      height: 100%;
+      width: 100%;
+      font-size: 13px;
+      resize: none;
+      outline: none;
+      border: 0;
+      border-radius: 10px;
+      padding: 5px;
+      overflow: hidden;
+    }
   }
+
   .button {
     display: flex;
     justify-content: space-between;
