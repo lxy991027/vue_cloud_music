@@ -332,6 +332,8 @@ export default {
     },
     play() {
       this.$store.state.isPlayed = true
+      // console.log(this.nowSong)
+      document.title = `正在播放:${this.nowSong[0].name}`
       // 为什么用定时间？因为audio自带的timeupdate事件更新时间不丝滑，我要丝滑的进度条
       clearTimeout(this.time)
       this.time = setInterval(() => {
@@ -782,12 +784,14 @@ export default {
       // }
     },
     isPlayed(newVal, oldVal) {
-      newVal ? this.$refs.music.play() : this.$refs.music.pause()
-      // if (newVal) {
-      //   this.$refs.music.play()
-      // } else {
-      //   this.$refs.music.pause()
-      // }
+      // newVal ? this.$refs.music.play() : this.$refs.music.pause()
+      if (newVal) {
+        this.$refs.music.play()
+        document.title = `正在播放:${this.nowSong[0].name}`
+      } else {
+        this.$refs.music.pause()
+        document.title = '音乐'
+      }
     },
     // 监听进度条长度变化，每变一次就赋值给dom元素
     ProgressWidth(newVal, oldVal) {
