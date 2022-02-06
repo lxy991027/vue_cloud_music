@@ -2,22 +2,23 @@ import axios from 'axios'
 // import router from '@/router'
 import { Message } from 'element-ui'
 
+const rootUrl = window.location.hostname
+
 const instance = axios.create({
   timeout: 1000 * 60,
   withCredentials: true,
-  baseURL: 'http://192.168.3.39:3000'
+  baseURL: `http://${rootUrl}:3000`
 })
 // instance.defaults.withCredentials = true
-instance.defaults.validateStatus = function() {
-  return true
-}
+instance.defaults.validateStatus = () => true
+
 // 添加请求拦截器
 instance.interceptors.request.use(
-  function(config) {
+  (config) => {
     // 在发送请求之前做些什么
     return config
   },
-  function(error) {
+  (error) => {
     // 对请求错误做些什么
     Message.error({ message: '请求超时!' })
     return Promise.reject(error)
@@ -25,7 +26,7 @@ instance.interceptors.request.use(
 )
 // 添加响应拦截器
 instance.interceptors.response.use(
-  function(response) {
+  (response) => {
     const status = response.status
     // 在发送请求之前做些什么
     if (status === 200) {
@@ -40,7 +41,7 @@ instance.interceptors.response.use(
       return Promise.reject(response)
     }
   },
-  function(error) {
+  (error) => {
     // 对请求错误做些什么
     return Promise.reject(error)
   }
@@ -50,8 +51,8 @@ const ajaxMethod = ['get', 'post']
 const api = {}
 ajaxMethod.forEach((method) => {
   // 数组取值的两种方式
-  api[method] = function(uri, data, config) {
-    return new Promise(function(resolve, reject) {
+  api[method] = (uri, data, config) => {
+    return new Promise((resolve, reject) => {
       instance[method](uri, data, config)
         .then((response) => {
           if (response.status === 200) {
