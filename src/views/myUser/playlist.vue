@@ -220,6 +220,7 @@ export default {
       width: 25%;
       // background-color: orchid;
       img {
+        border-radius: 15px;
         width: 90%;
         height: 90%;
       }

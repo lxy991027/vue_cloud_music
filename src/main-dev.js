@@ -15,14 +15,15 @@ import 'element-ui/lib/theme-chalk/index.css'
 import http from '@/api/http.js'
 // 导入video.js
 
-import Videojs from 'video.js'
+import videojs from 'video.js'
 
 import 'video.js/dist/video-js.css'
 
 import f from '@/js/_format.js'
 
 import '@/api/filter.js'
-Vue.prototype.$video = Videojs
+
+Vue.prototype.$video = videojs
 
 Vue.prototype.$http = http
 

@@ -372,6 +372,7 @@ export default {
       const count = document.querySelector(`.span${id}`)
       const background = document.querySelector(`.text${id}`)
       count.innerHTML = '0\\500'
+      count.style.color = ''
       background.innerHTML = ''
       msgBox.style.display = 'block'
 

@@ -184,16 +184,16 @@ export default {
     pathHandler(params) {
       switch (params.targetType) {
         case 1: // 单曲
-          this.$router.push({ path: '/song', query: { id: params.targetId } })
+          this.$router.push({ path: '/song', query: { id: params.targetId + '' } })
           break
         case 10: // 专辑
-          this.$router.push({ path: '/album', query: { id: params.targetId } })
+          this.$router.push({ path: '/album', query: { id: params.targetId + '' } })
           break
         case 1000: // 歌单
-          this.$router.push({ path: '/detail', query: { id: params.targetId } })
+          this.$router.push({ path: '/detail', query: { id: params.targetId + '' } })
           break
         case 1004: // MV
-          this.$router.push({ path: '/mv', query: { id: params.targetId } })
+          this.$router.push({ path: '/mv', query: { id: params.targetId + '' } })
           break
         case 3000: // 外链
           window.open(params.url, '_blank')

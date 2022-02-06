@@ -406,7 +406,7 @@ export default {
 /deep/.el-input-group__append {
   position: absolute;
   top: 6px;
-  left: 28px;
+  left: 10px;
 }
 /deep/.el-input-group__append {
   border: 0;
