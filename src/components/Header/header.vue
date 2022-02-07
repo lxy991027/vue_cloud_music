@@ -5,7 +5,7 @@
       <div class="min-header" :style="{ left: `-${left}px` }">
         <div>
           <h1 class="logo">
-            <router-link to="/home">网易云音乐</router-link>
+            <router-link to="/home">网页音乐APP</router-link>
           </h1>
           <ul class="tab">
             <li v-for="(item, index) in tabList" :key="index">
@@ -361,15 +361,16 @@ export default {
   }
 }
 .logo {
-  width: 176px;
+  width: 55px;
   height: 55px;
   padding-right: 20px;
   a {
     display: block;
     width: 100%;
     height: 100%;
-    background-image: url('../../assets/topbar.png');
-    background-position: 0 -7px;
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACEAAAAhCAYAAABX5MJvAAAE00lEQVRYhc1YfWxTVRT/9W1ru64b+16oMUuWWMHE6P7AsBjNHAqabibEPxwEiCKoS5ZomAQifqCZMI0jhEwgcYwERKgRJwlTRwDnINvMjIJ/CDYyP5aVfegcW2nXru3MOb3vtX3te+uERX9Jc2/Pu73nd88575xza0CKcMMuAagEsBLAcgB2AItjfn0dgAtAH4AzALpscIVT2X1OEm7YrQDqxeeOVEkDGALQQh8bXJ5/TcIN+3oAzQCK5qFcjTEADTa4js6LhDh9K4Cnb0G5Gk4Am5JZJYGEG3Y6dQeAZbeRgIx+AA4bXGOxQklFwHorBNKK8pFx3xJIVovWEtq3Q+hJTkK4YN4ESGnesWYUj/ai8NIpFI/0ImvLs3pEWmMFijtEEB6ZS2FaqQ3GinL4T3+NsMfLskUHdsLy4pqEtWNLnkDw5wGtrTbIwSoh6oZmPeUGkxE5Ta+g+JezyD2+B1nbn1eeZdZW8+h5+wOMZJfD13YSgfN9CA8N623ZLLslXQjq9V5D8nVe5yFklN/D38Mjf7ESNYJXrrF1Jp57VU+5jCKht0kSmbBeayX7WyYQDMHzzgGMllbCL0iQhYK/DkYs8sxqGCvuT4WAjHrSL6dizUxo3d2gEJhYvxVTr+3FrD/A5LIbX0bJeL9iIdOqh1DQ40TJcI9eYMaC9FZKohYkRfrdZciqX8ePpt5qge9EB8/JPfndx2DdUQeDxYxZ73S89UoKkNO8HflftbKl5sBKSRSjpLDURSI+NDAIT+N+Zcmi1kY+PSm/sfl1jOQv4zWEm+9+CO/B44plctt2z0ViuSSqYVKYax5hsffwZ8pjSkamJ1fw/O+aF+Bt/YTdM/3FNyxLX1qGG3U7MdnQxN/Na6thqtI8J4GDMrYcR01qtSCt7E6eB871KHJTTRWPM70/KMHJazov8mh8+IGIRfYc5jWErJc26JFYrM6YCgwFuco85B6NkivM4zF4JT4JzXx7mUdDbjbHDMHbFrGg8dEH9UgkpO3khMzmKKE/3Dymly+N38hWrMxnfZFADVz4LvJ7i5kzrR4J6ogSEB7+k19LVnhXqfJ4+mQnyykwc/bu4FPTW0SpG8JNcjpPEdcl0ZIlgIJtpv9HFptXPxa1xO9ueHYd5Dn5mopW0dUvkVFRzuTkgFST50Mlh0sSPWFS+D7tjJCodcSZc+rNfayM0reM4E/XML5qIwK9lxRZ5ppqxTp0KA30GdywU7ifS+orqwXFg90cbP7OCxh/fFPCGibnnUZobDxOTum7oPtjID2Ncwm9yhpYQZboEk1pYlx4vJjc+h7POfEc2pWQAck9agIUI3nt+5kAWch39HMtAqS3SxJteYvWKjrBzZaPeJ658SkU9Do1kw9ZjmpG4fftnLpnJ6YwsXaLniuoEw9zUyPq+oBeOadeImvb5qgFBgbhP3MRoaFRGMxGZNxr50RFriMEhtyYdNRh5vJVrS2pzyyjxndenRVZIPv9bUrVTAaqJ74j7fC8sS/BTSoonVVct+2G/UQqbT4FnclRyaeXivIx6/Mj9NsQvxn+U2fnUk5w2uCqlb+oSZBbzi9Quy+D2v6q2PtHXNoWDxxi4UIRcKgvQAm1Q1xMqsSN6XbCKSwwpt7z/3sXVRH5b2/lKjIL8/8EgH8Awo7Bb/oiyWEAAAAASUVORK5CYII=);
+    background-position: 0;
+    background-repeat: no-repeat;
     text-indent: -9999px;
   }
 }
@@ -387,7 +388,7 @@ export default {
 .el-input {
   // margin-left: 85px;
   // margin-top: 19px;
-  width: 208px;
+  width: 220px;
   height: 32px;
   position: relative;
   border-radius: 16px;
@@ -400,6 +401,7 @@ export default {
   padding: 0;
   line-height: 32px;
   padding-left: 30px;
+  padding-right: 20px !important;
   // padding-top: 8px;
   height: 32px;
 }
@@ -407,6 +409,7 @@ export default {
   position: absolute;
   top: 6px;
   left: 10px;
+  margin: 0 !important;
 }
 /deep/.el-input-group__append {
   border: 0;
@@ -416,7 +419,7 @@ export default {
 }
 .el-button {
   padding: 0;
-  margin: 0;
+  margin: 0 !important;
 }
 .btn {
   width: 90px;

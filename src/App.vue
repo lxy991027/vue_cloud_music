@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Welcome></Welcome>
     <div class="header">
       <Header></Header>
     </div>
@@ -19,12 +20,14 @@
 import Header from '@/components/Header/header.vue'
 import Audio from '@/components/audio/Audio.vue'
 import Login from '@/components/login/login.vue'
+import Welcome from '@/components/welcome/welcome.vue'
 import { mapMutations } from 'vuex'
 export default {
   components: {
     Header,
     Audio,
-    Login
+    Login,
+    Welcome
   },
 
   created() {

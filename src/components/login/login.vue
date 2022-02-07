@@ -5,10 +5,12 @@
         <span>手机号登录</span>
         <a href="javascript:;" class="el-icon-close" @click="close"></a>
       </div>
-      <input class="text" type="text" placeholder="请输入手机号" v-model="loginForm.phone" />
-      <p class="msg" :class="{ red: !isMsg, green: isMsg }">{{ msg }}</p>
-      <input class="password" type="password" placeholder="请输入密码" v-model="loginForm.pwd" />
-      <a href="javascript:;" class="go" @click="go">登录</a>
+      <form @keyup.enter="go">
+        <input class="text" type="text" placeholder="请输入手机号" v-model="loginForm.phone" />
+        <p class="msg" :class="{ red: !isMsg, green: isMsg }">{{ msg }}</p>
+        <input class="password" type="password" placeholder="请输入密码" autocomplete="off" v-model="loginForm.pwd" />
+        <a href="javascript:;" class="go" @click="go">登录</a>
+      </form>
     </div>
   </div>
 </template>
@@ -139,6 +141,12 @@ export default {
         font-weight: bold;
         font-size: 14px;
       }
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
     }
     .msg {
       position: absolute;

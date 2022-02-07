@@ -31,7 +31,6 @@
       </div>
       <div class="comment_textarea">
         <div class="textarea">
-          {{ text }}
           <textarea placeholder="期待你的神评论……" v-model="text"></textarea>
         </div>
         <span class="error" v-if="text.length > 500">字数超出限制</span>
