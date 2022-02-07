@@ -18,10 +18,12 @@
       <div class="title">
         <span>全部MV</span>
       </div>
-      <div class="main" ref="main" :class="{ 'grid-template-columns5': MvListCount === 5, 'grid-template-columns4': MvListCount === 4 }">
-        <MvList v-for="(item, index) in list" :key="item.id ? item.id + index : index" :list="item"></MvList>
-      </div>
-      <div class="msg" ref="msg">{{ msg }}</div>
+      <main>
+        <div class="main" ref="main" :class="{ 'grid-template-columns5': MvListCount === 5, 'grid-template-columns4': MvListCount === 4 }">
+          <MvList v-for="(item, index) in list" :key="item.id ? item.id + index : index" :list="item"></MvList>
+        </div>
+        <div class="msg" ref="msg">{{ msg }}</div>
+      </main>
     </div>
   </div>
 </template>
@@ -189,6 +191,10 @@ export default {
     color: #050505;
     height: 30px;
   }
+}
+main {
+  width: 100%;
+  min-height: 100vh;
 }
 .main {
   display: grid;

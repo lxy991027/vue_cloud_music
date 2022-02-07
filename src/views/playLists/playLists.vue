@@ -34,12 +34,14 @@
           <span :class="params.order === 'new' ? 'active' : ''" @click="selectOrder('new')">最新</span>
         </div>
       </div>
-      <ul class="main" ref="main" :class="{ 'grid-template-columns6 ': PlayCdCount === 6, 'grid-template-columns5': PlayCdCount === 5 }">
-        <li v-for="(item, index) in list" :key="item.id ? item.id + index : index">
-          <PlayCd :playCdList="item"></PlayCd>
-        </li>
-      </ul>
-      <div class="msg" ref="msg">{{ msg }}</div>
+      <main>
+        <ul class="main" ref="main" :class="{ 'grid-template-columns6 ': PlayCdCount === 6, 'grid-template-columns5': PlayCdCount === 5 }">
+          <li v-for="(item, index) in list" :key="item.id ? item.id + index : index">
+            <PlayCd :playCdList="item"></PlayCd>
+          </li>
+        </ul>
+        <div class="msg" ref="msg">{{ msg }}</div>
+      </main>
     </div>
   </div>
 </template>
@@ -345,6 +347,10 @@ export default {
       cursor: pointer;
     }
   }
+}
+main {
+  width: 100%;
+  min-height: 100vh;
 }
 .main {
   margin-top: 20px;

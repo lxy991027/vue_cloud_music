@@ -12,13 +12,15 @@
           <a href="javascript:;" v-for="(item, index) in type" :key="index" :class="index === typeIndex ? 'active' : ''" @click="selectType('type', index)">{{ item.label }}</a>
         </div>
       </div>
-      <div class="main" ref="main">
-        <div class="item" v-for="(item, index) in list" :key="item.id + '' + index" ref="item">
-          <hotsingerlist :list="item"></hotsingerlist>
+      <main>
+        <div class="main" ref="main">
+          <div class="item" v-for="(item, index) in list" :key="item.id + '' + index" ref="item">
+            <hotsingerlist :list="item"></hotsingerlist>
+          </div>
+          <div class="symbolic" v-for="(item, index) in symbolic" :key="index"></div>
         </div>
-        <div class="symbolic" v-for="(item, index) in symbolic" :key="index"></div>
-      </div>
-      <div class="msg" ref="msg">{{ msg }}</div>
+        <div class="msg" ref="msg">{{ msg }}</div>
+      </main>
     </div>
   </div>
 </template>
@@ -213,6 +215,10 @@ export default {
     color: #050505;
     height: 30px;
   }
+}
+main {
+  width: 100%;
+  min-height: 100vh;
 }
 .main {
   transform: translateX(-15px);
