@@ -8,7 +8,7 @@
           <span class="index">{{ index + 1 }}</span>
 
           <div>
-            <router-link :to="{ path: '/song', query: { id: item2.id } }" class="config">
+            <router-link :to="{ path: '/song', query: { id: item2.id + '' } }" class="config">
               <span class="title">{{ item2.name }}</span>
             </router-link>
             <!-- <a href="#">

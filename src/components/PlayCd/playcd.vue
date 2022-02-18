@@ -66,11 +66,12 @@ export default {
     }
   }
   .box {
+    transition: transform 0.3s;
     background-image: url(../../assets/lo.gif);
     background-repeat: no-repeat;
     background-size: 100%;
     border-radius: 35px;
-    overflow: hidden;
+    // overflow: hidden;
     position: absolute;
     top: 0;
     left: 0;
@@ -84,8 +85,11 @@ export default {
       padding-right: 10%;
       background: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 97%, rgba(0, 0, 0, 0.5) 100%);
       font-size: 10px;
+      height: 15px;
+      line-height: 15px;
       color: #fff;
       text-shadow: 1px 1px 4px #000;
+      border-radius: 5px;
     }
     img {
       vertical-align: text-top;
@@ -104,9 +108,9 @@ i {
 //   background-color: rgba(255, 255, 255, 0.3);
 // }
 .divcd:hover img {
-  filter: blur(10px);
+  filter: blur(7px);
 }
-.divcd:hover {
+.divcd:hover .box {
   transform: translateY(-5%);
 }
 .divcd:hover .msg {

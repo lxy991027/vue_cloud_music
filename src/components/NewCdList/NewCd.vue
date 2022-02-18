@@ -75,6 +75,7 @@ export default {
     right: 0;
     width: inherit;
     height: inherit;
+    border-radius: 25px 0 0 25px;
   }
 }
 // h4 {

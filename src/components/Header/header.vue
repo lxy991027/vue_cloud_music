@@ -227,16 +227,16 @@ export default {
       this.input3 = item.name
       switch (type) {
         case 'songs':
-          this.$router.push({ path: '/song', query: { id: item.id } })
+          this.$router.push({ path: '/song', query: { id: item.id + '' } })
           break
         case 'artists':
-          this.$router.push({ path: '/singer', query: { id: item.id } })
+          this.$router.push({ path: '/singer', query: { id: item.id + '' } })
           break
         case 'albums':
-          this.$router.push({ path: '/album', query: { id: item.id } })
+          this.$router.push({ path: '/album', query: { id: item.id + '' } })
           break
         case 'playlists':
-          this.$router.push({ path: '/detail', query: { id: item.id } })
+          this.$router.push({ path: '/detail', query: { id: item.id + '' } })
           break
       }
       // this.isShowSearch = false
