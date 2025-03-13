@@ -1,4 +1,4 @@
-#  基于VUE2,使用网易云音乐API实现PC端音乐webApp
+#  使用网易云音乐API实现PC端音乐
 
 ##### 说明
 
@@ -6,10 +6,8 @@
 
 ##### 安装教程
 
-1、下载代码后，安装依赖 npm install ，运行服务npm run serve
+下载代码后，安装依赖 npm install ，运行服务npm run serve
 
-2、下载网易云音乐NodeJs代码后，安装依赖 npm install ，运行服务npm run start
 
-##### 简介
 
-自己独立写的播放器交互逻辑，当然了，参考了一些其他播放器，比如进度条绘制。实现随机播放等。一些小功能，哈哈!!!!!!!
+
